@@ -54,8 +54,13 @@ function MonthView(element, calendar) {
 		t.end = end;
 		t.visStart = visStart;
 		t.visEnd = visEnd;
+//TODO merge
+//<<<<<<< master-servoy
 
 		renderBasic(rowCnt, colCnt, true);
+//=======
+//		renderBasic(rowCnt, nwe ? 5 : 7, true);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	}
 	
 	

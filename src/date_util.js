@@ -45,6 +45,13 @@ function addMonths(d, n, keepTime) { // prevents day overflow/underflow
 	return d;
 }
 
+//<<<<<<< master-servoy
+//=======
+function addWeeks(d, n, keepTime) {
+	addDays(d, n * 7, keepTime);
+	return d;
+}
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 
 function addDays(d, n, keepTime) { // deals with daylight savings
 	if (+d) {
@@ -358,8 +365,13 @@ fc.dateFormatters = dateFormatters;
 /* thanks jQuery UI (https://github.com/jquery/jquery-ui/blob/master/ui/jquery.ui.datepicker.js)
  * 
  * Set as calculateWeek to determine the week of the year based on the ISO 8601 definition.
+<<<<<<< master-servoy
  * `date` - the date to get the week for
  * `number` - the number of the week within the year that contains this date
+=======
+ * @param  date  Date - the date to get the week for
+ * @return  number - the number of the week within the year that contains this date
+>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
  */
 function iso8601Week(date) {
 	var time;

@@ -33,7 +33,12 @@ function AgendaEventRenderer() {
 	var getColWidth = t.getColWidth;
 	var getSnapHeight = t.getSnapHeight;
 	var getSnapMinutes = t.getSnapMinutes;
+	//TODo merge: t.getSlotContainer
+//<<<<<<< master-servoy
 	var getSlotContainer = t.getSlotContainer;
+//=======
+//	var getBodyContent = t.getBodyContent;
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	var reportEventElement = t.reportEventElement;
 	var showEvents = t.showEvents;
 	var hideEvents = t.hideEvents;
@@ -74,6 +79,7 @@ function AgendaEventRenderer() {
 		}
 
 		renderSlotSegs(compileSlotSegs(slotEvents), modifiedEventId);
+		trigger('eventAfterAllRender');
 	}
 	
 	
@@ -189,6 +195,13 @@ function AgendaEventRenderer() {
 			eventElements,
 			eventElement,
 			triggerRes,
+//TODO Servoy
+//<<<<<<< master-servoy
+//=======
+//			vsideCache={},
+//			hsideCache={},
+//			key, val,
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 			titleElement,
 			height,
 			slotSegmentContainer = getSlotSegmentContainer(),
@@ -271,8 +284,16 @@ function AgendaEventRenderer() {
 		for (i=0; i<segCnt; i++) {
 			seg = segs[i];
 			if (eventElement = seg.element) {
+//TODO merge
+//<<<<<<< master-servoy
 				seg.vsides = vsides(eventElement, true);
 				seg.hsides = hsides(eventElement, true);
+//=======
+//				val = vsideCache[key = seg.key = cssKey(eventElement[0])];
+//				seg.vsides = val === undefined ? (vsideCache[key] = vsides(eventElement, true)) : val;
+//				val = hsideCache[key];
+//				seg.hsides = val === undefined ? (hsideCache[key] = hsides(eventElement, true)) : val;
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 				titleElement = eventElement.find('.fc-event-title');
 				if (titleElement.length) {
 					seg.contentTop = titleElement[0].offsetTop;
@@ -448,7 +469,12 @@ function AgendaEventRenderer() {
 					// changed!
 					var minuteDelta = 0;
 					if (!allDay) {
+//TODO merge
+//<<<<<<< master-servoy
 						minuteDelta = Math.round((eventElement.offset().top - getSlotContainer().offset().top) / snapHeight)
+//=======
+//						minuteDelta = Math.round((eventElement.offset().top - getBodyContent().offset().top) / snapHeight)
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 							* snapMinutes
 							+ minMinute
 							- (event.start.getHours() * 60 + event.start.getMinutes());
@@ -477,6 +503,8 @@ function AgendaEventRenderer() {
 		var colWidth = getColWidth();
 		var snapHeight = getSnapHeight();
 		var snapMinutes = getSnapMinutes();
+//TODO merge
+//<<<<<<< master-servoy
 
 		// states
 		var origPosition; // original position of the element, not the mouse
@@ -487,6 +515,8 @@ function AgendaEventRenderer() {
 		var dayDelta; // derived from colDelta
 		var minuteDelta, prevMinuteDelta;
 
+//=======
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		eventElement.draggable({
 			scroll: false,
 			grid: [ colWidth, snapHeight ],
@@ -511,6 +541,8 @@ function AgendaEventRenderer() {
 
 			},
 			drag: function(ev, ui) {
+//TODO merge
+//<<<<<<< master-servoy
 
 				// NOTE: this `cell` value is only useful for determining in-bounds and all-day.
 				// Bad for anything else due to the discrepancy between the mouse position and the
@@ -535,6 +567,12 @@ function AgendaEventRenderer() {
 						col = Math.min(colCnt-1, col);
 						var date = cellToDate(0, col);
 						dayDelta = dayDiff(date, origDate);
+//=======
+//				minuteDelta = Math.round((ui.position.top - origPosition.top) / snapHeight) * snapMinutes;
+//				if (minuteDelta != prevMinuteDelta) {
+//					if (!allDay) {
+//						updateTimeText(minuteDelta);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 					}
 
 					// calculate minute delta (only if over slots)
@@ -621,7 +659,19 @@ function AgendaEventRenderer() {
 			}
 			timeElement.text(formatDates(newStart, newEnd, opt('timeFormat')));
 		}
+//<<<<<<< master-servoy
 
+//=======
+		//TODO merge: remove ?
+		function resetElement() {
+			// convert back to original slot-event
+			if (allDay) {
+				timeElement.css('display', ''); // show() was causing display=inline
+				eventElement.draggable('option', 'grid', [colWidth, snapHeight]);
+				allDay = false;
+			}
+		}
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	}
 	
 	

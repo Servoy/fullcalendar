@@ -26,6 +26,9 @@ var defaults = {
 	lazyFetching: true,
 	startParam: 'start',
 	endParam: 'end',
+
+	// resource ajax. Do we refetch resources on every view change?
+	//TODO cherry-pick: refetchResources: false,
 	
 	// time formats
 	titleFormat: {

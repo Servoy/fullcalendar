@@ -75,8 +75,13 @@ function SelectionManager() {
 			var dates;
 			hoverListener.start(function(cell, origCell) { // TODO: maybe put cellToDate/getIsCellAllDay info in cell
 				clearSelection();
+//<<<<<<< master-servoy
 				if (cell && getIsCellAllDay(cell)) {
 					dates = [ cellToDate(origCell), cellToDate(cell) ].sort(dateCompare);
+//=======
+//				if (cell && cellIsAllDay(cell)) {
+//					dates = [ cellDate(origCell), cellDate(cell) ].sort(cmp);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 					renderSelection(dates[0], dates[1], true);
 				}else{
 					dates = null;

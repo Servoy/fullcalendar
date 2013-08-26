@@ -74,6 +74,13 @@ function BasicView(element, calendar, viewName) {
 	var colPositions;
 	var colContentPositions;
 	
+//TODO merge
+//<<<<<<< master-servoy
+//=======
+//	var rtl, dis, dit;
+//	var firstDay;
+//	var nwe; // no weekends? a 0 or 1 for easy computations
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	var tm;
 	var colFormat;
 	var showWeekNumbers;
@@ -88,18 +95,38 @@ function BasicView(element, calendar, viewName) {
 	
 	disableTextSelection(element.addClass('fc-grid'));
 	
-	
+//TODO merge	
+//<<<<<<< master-servoy
 	function renderBasic(_rowCnt, _colCnt, _showNumbers) {
 		rowCnt = _rowCnt;
 		colCnt = _colCnt;
 		showNumbers = _showNumbers;
+//=======
+//	function renderBasic(r, c, showNumbers) {
+//		rowCnt = r;
+//		colCnt = c;
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		updateOptions();
+//TODO merge
+//<<<<<<< master-servoy
 
 		if (!body) {
 			buildEventContainer();
+//=======
+//		var firstTime = !body;
+//		if (firstTime) {
+//			buildEventContainer();
+//		}else{
+//			clearEvents();
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		}
+//TODO merge
+//<<<<<<< master-servoy
 
 		buildTable();
+//=======
+//		buildTable(showNumbers);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	}
 	
 	
@@ -118,14 +145,19 @@ function BasicView(element, calendar, viewName) {
 		}
 	}
 	
+//TODO merge
+//<<<<<<< master-servoy
+//=======
 	
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	function buildEventContainer() {
 		daySegmentContainer =
 			$("<div class='fc-event-container' style='position:absolute;z-index:8;top:0;left:0'/>")
 				.appendTo(element);
 	}
 	
-	
+//TODO merge	
+//<<<<<<< master-servoy
 	function buildTable() {
 		var html = buildTableHTML();
 
@@ -244,9 +276,19 @@ function BasicView(element, calendar, viewName) {
 
 
 	function buildCellHTML(date) {
+//=======
+//	
+//	function buildTable(showNumbers) {
+//		var html = '';
+//		var i, j;
+//		var headerClass = tm + "-widget-header";
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		var contentClass = tm + "-widget-content";
 		var month = t.start.getMonth();
 		var today = clearTime(new Date());
+
+//TODO merge
+//<<<<<<< master-servoy
 		var html = '';
 		var classNames = [
 			'fc-day',
@@ -256,7 +298,110 @@ function BasicView(element, calendar, viewName) {
 
 		if (date.getMonth() != month) {
 			classNames.push('fc-other-month');
+//=======
+//		var cellDate; // not to be confused with local function. TODO: better names
+//		var cellClasses;
+//		var cell;
+//
+//		html += "<table class='fc-border-separate' style='width:100%' cellspacing='0'>" +
+//		        "<thead>" +
+//		        "<tr>";
+//
+//		if (showWeekNumbers) {
+//			html += "<th class='fc-week-number " + headerClass + "'/>";
+//		}
+//
+//		for (i=0; i<colCnt; i++) {
+//			cellDate = _cellDate(0, i); // a little confusing. cellDate is local variable. _cellDate is private function
+//			html += "<th class='fc-day-header fc-" + dayIDs[cellDate.getDay()] + " " + headerClass + "'/>";
+//		}
+//
+//		html += "</tr>" +
+//		        "</thead>" +
+//		        "<tbody>";
+//
+//		for (i=0; i<rowCnt; i++) {
+//			html += "<tr class='fc-week'>";
+//
+//			if (showWeekNumbers) {
+//				html += "<td class='fc-week-number " + contentClass + "'>" +
+//				        "<div/>" +
+//				        "</td>";
+//			}
+//
+//			for (j=0; j<colCnt; j++) {
+//				cellDate = _cellDate(i, j); // a little confusing. cellDate is local variable. _cellDate is private function
+//
+//				cellClasses = [
+//					'fc-day',
+//					'fc-' + dayIDs[cellDate.getDay()],
+//					contentClass
+//				];
+//				if (cellDate.getMonth() != month) {
+//					cellClasses.push('fc-other-month');
+//				}
+//				if (+cellDate == +today) {
+//					cellClasses.push('fc-today');
+//					cellClasses.push(tm + '-state-highlight');
+//				}
+//
+//				html += "<td" +
+//				        " class='" + cellClasses.join(' ') + "'" +
+//				        " data-date='" + formatDate(cellDate, 'yyyy-MM-dd') + "'" +
+//				        ">" + 
+//				        "<div>";
+//				if (showNumbers) {
+//					html += "<div class='fc-day-number'>" + cellDate.getDate() + "</div>";
+//				}
+//				html += "<div class='fc-day-content'>" +
+//				        "<div style='position:relative'>&nbsp;</div>" +
+//				        "</div>" +
+//				        "</div>" +
+//				        "</td>";
+//			}
+//
+//			html += "</tr>";
+//		}
+//		html += "</tbody>" +
+//		        "</table>";
+//
+//		lockHeight(); // the unlock happens later, in setHeight()...
+//		if (table) {
+//			table.remove();
+//		}
+//		table = $(html).appendTo(element);
+//
+//		head = table.find('thead');
+//		headCells = head.find('.fc-day-header');
+//		body = table.find('tbody');
+//		bodyRows = body.find('tr');
+//		bodyCells = body.find('.fc-day');
+//		bodyFirstCells = bodyRows.find('td:first-child');
+//		bodyCellTopInners = bodyRows.eq(0).find('.fc-day-content > div');
+//		
+//		markFirstLast(head.add(head.find('tr'))); // marks first+last tr/th's
+//		markFirstLast(bodyRows); // marks first+last td's
+//		bodyRows.eq(0).addClass('fc-first');
+//		bodyRows.filter(':last').addClass('fc-last');
+//	
+//		if (showWeekNumbers) {
+//			head.find('.fc-week-number').text(weekNumberTitle);
+//		}
+//
+//		headCells.each(function(i, _cell) {
+//			var date = indexDate(i);
+//			$(_cell).text(formatDate(date, colFormat));
+//		});
+//
+//		if (showWeekNumbers) {
+//			body.find('.fc-week-number > div').each(function(i, _cell) {
+//				var weekStart = _cellDate(i, 0);
+//				$(_cell).text(formatDate(weekStart, weekNumberFormat));
+//			});
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		}
+//TODO merge
+//<<<<<<< master-servoy
 		if (+date == +today) {
 			classNames.push(
 				'fc-today',
@@ -289,6 +434,15 @@ function BasicView(element, calendar, viewName) {
 			"</td>";
 
 		return html;
+//=======
+//		
+//		bodyCells.each(function(i, _cell) {
+//			var date = indexDate(i);
+//			trigger('dayRender', t, date, $(_cell));
+//		});
+//
+//		dayBind(bodyCells);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	}
 
 
@@ -322,6 +476,7 @@ function BasicView(element, calendar, viewName) {
 			}
 		});
 		
+		unlockHeight();
 	}
 	
 	
@@ -516,5 +671,35 @@ function BasicView(element, calendar, viewName) {
 	function allDayRow(i) {
 		return bodyRows.eq(i);
 	}
+	//TODO merge
+//<<<<<<< master-servoy
+//=======
+	
+	
+	function allDayBounds(i) {
+		var left = 0;
+		if (showWeekNumbers) {
+			left += weekNumberWidth;
+		}
+		return {
+			left: left,
+			right: viewWidth
+		};
+	}
+
+
+
+	// makes sure height doesn't collapse while we destroy/render new cells
+	// (this causes a bad end-user scrollbar jump)
+	// TODO: generalize this for all view rendering. (also in Calendar.js)
+
+	function lockHeight() {
+		setMinHeight(element, element.height());
+	}
+
+	function unlockHeight() {
+		setMinHeight(element, 1);
+	}
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	
 }

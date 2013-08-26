@@ -199,7 +199,13 @@ function View(element, calendar, viewName) {
 	function eventDrop(e, event, dayDelta, minuteDelta, allDay, ev, ui) {
 		var oldAllDay = event.allDay;
 		var eventId = event._id;
-		moveEvents(eventsByID[eventId], dayDelta, minuteDelta, allDay);
+//TODO merge
+//<<<<<<< master-servoy
+//		moveEvents(eventsByID[eventId], dayDelta, minuteDelta, allDay);
+//=======
+		var oldResourceId = event.resource || '';
+		moveEvents(eventsByID[eventId], dayDelta, minuteDelta, allDay, resource);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		trigger(
 			'eventDrop',
 			e,
@@ -209,7 +215,11 @@ function View(element, calendar, viewName) {
 			allDay,
 			function() {
 				// TODO: investigate cases where this inverse technique might not work
-				moveEvents(eventsByID[eventId], -dayDelta, -minuteDelta, oldAllDay);
+//<<<<<<< master-servoy
+//				moveEvents(eventsByID[eventId], -dayDelta, -minuteDelta, oldAllDay);
+//=======
+				moveEvents(eventsByID[eventId], -dayDelta, -minuteDelta, oldAllDay, oldResourceId);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 				reportEventChange(eventId);
 			},
 			ev,
@@ -256,6 +266,14 @@ function View(element, calendar, viewName) {
 			if (e.end) {
 				e.end = addMinutes(addDays(e.end, dayDelta, true), minuteDelta);
 			}
+//TODO merge
+//<<<<<<< master-servoy
+//=======
+			if (e.resource != resource && len == 1) {
+				// Change resource if this is not repeating event
+				e.resource = resource;
+			}
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 			normalizeEvent(e, options);
 		}
 	}

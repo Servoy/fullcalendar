@@ -48,6 +48,11 @@ function AgendaView(element, calendar, viewName) {
 	t.getRowCnt = function() { return 1 };
 	t.getColCnt = function() { return colCnt };
 	t.getColWidth = function() { return colWidth };
+//TODO merge
+//<<<<<<< master-servoy
+//=======
+	t.getViewName = function() { return viewName };
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	t.getSnapHeight = function() { return snapHeight };
 	t.getSnapMinutes = function() { return snapMinutes };
 	t.defaultSelectionEnd = defaultSelectionEnd;
@@ -118,6 +123,7 @@ function AgendaView(element, calendar, viewName) {
 	var colPositions;
 	var colContentPositions;
 	var slotTopCache = {};
+	var savedScrollTop;
 	
 	var tm;
 	var rtl;
@@ -185,8 +191,63 @@ function AgendaView(element, calendar, viewName) {
 		var maxd;
 		var minutes;
 		var slotNormal = opt('slotMinutes') % 15 == 0;
-		
+//TODO merge		
+//<<<<<<< master-servoy
 		buildDayTable();
+//=======
+//		s =
+//			"<table style='width:100%' class='fc-agenda-days fc-border-separate' cellspacing='0'>" +
+//			"<thead>" +
+//			"<tr>";
+//
+//		if (showWeekNumbers) {
+//			s += "<th class='fc-agenda-axis fc-week-number " + headerClass + "'/>";
+//		}
+//		else {
+//			s += "<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
+//		}
+//
+//		for (i=0; i<colCnt; i++) {
+//			s +=
+//				"<th class='fc- fc-col" + i + ' ' + headerClass + "'/>"; // fc- needed for setDayID
+//		}
+//		s +=
+//			"<th class='fc-agenda-gutter " + headerClass + "'>&nbsp;</th>" +
+//			"</tr>" +
+//			"</thead>" +
+//			"<tbody>" +
+//			"<tr>" +
+//			"<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
+//		for (i=0; i<colCnt; i++) {
+//			s +=
+//				"<td class='fc- fc-col" + i + ' ' + contentClass + "'>" + // fc- needed for setDayID
+//				"<div>" +
+//				"<div class='fc-day-content'>" +
+//				"<div style='position:relative'>&nbsp;</div>" +
+//				"</div>" +
+//				"</div>" +
+//				"</td>";
+//		}
+//		s +=
+//			"<td class='fc-agenda-gutter " + contentClass + "'>&nbsp;</td>" +
+//			"</tr>" +
+//			"</tbody>" +
+//			"</table>";
+//		dayTable = $(s).appendTo(element);
+//		dayHead = dayTable.find('thead');
+//		dayHeadCells = dayHead.find('th').slice(1, -1);
+//		dayBody = dayTable.find('tbody');
+//		dayBodyCells = dayBody.find('td').slice(0, -1);
+//		dayBodyCellInners = dayBodyCells.find('div.fc-day-content div');
+//		dayBodyFirstCell = dayBodyCells.eq(0);
+//		dayBodyFirstCellStretcher = dayBodyFirstCell.find('> div');
+//		
+//		markFirstLast(dayHead.add(dayHead.find('tr')));
+//		markFirstLast(dayBody.add(dayBody.find('tr')));
+//		
+//		axisFirstCells = dayHead.find('th:first');
+//		gutterCells = dayTable.find('.fc-agenda-gutter');
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		
 		slotLayer =
 			$("<div style='position:absolute;z-index:2;left:0;width:100%'/>")
@@ -359,6 +420,8 @@ function AgendaView(element, calendar, viewName) {
 		var contentClass = tm + "-widget-content";
 		var date;
 		var today = clearTime(new Date());
+//TODO merge
+//<<<<<<< master-servoy
 		var col;
 		var cellsHTML;
 		var cellHTML;
@@ -381,6 +444,25 @@ function AgendaView(element, calendar, viewName) {
 				'fc-' + dayIDs[date.getDay()],
 				contentClass
 			];
+//=======
+//
+//		if (showWeekNumbers) {
+//			var weekText = formatDate(colDate(0), weekNumberFormat);
+//			if (rtl) {
+//				weekText = weekText + weekNumberTitle;
+//			}
+//			else {
+//				weekText = weekNumberTitle + weekText;
+//			}
+//			dayHead.find('.fc-week-number').text(weekText);
+//		}
+//
+//		for (i=0; i<colCnt; i++) {
+//			date = colDate(i);
+//			headCell = dayHeadCells.eq(i);
+//			headCell.html(formatDate(date, colFormat));
+//			bodyCell = dayBodyCells.eq(i);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 			if (+date == +today) {
 				classNames.push(
 					tm + '-state-highlight',
@@ -449,6 +531,14 @@ function AgendaView(element, calendar, viewName) {
 
 		snapRatio = opt('slotMinutes') / snapMinutes;
 		snapHeight = slotHeight / snapRatio;
+//TODO merge
+//<<<<<<< master-servoy
+//=======
+//		
+//		if (dateChanged) {
+//			resetScroll();
+//		}
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	}
 	
 	
@@ -835,7 +925,12 @@ function AgendaView(element, calendar, viewName) {
 						addMinutes(cloneDate(d1), snapMinutes), // calculate minutes depending on selection slot minutes 
 						d2,
 						addMinutes(cloneDate(d2), snapMinutes)
+//TODO merge
+//<<<<<<< master-servoy
 					].sort(dateCompare);
+//=======
+//					].sort(cmp);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 					renderSlotSelection(dates[0], dates[3]);
 				}else{
 					dates = null;

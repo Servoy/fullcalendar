@@ -1,4 +1,12 @@
+<<<<<<< master-servoy
+=======
+version 1.6.1.1 (5/11/13)
+	- Merged with latest Fullcalendar version 1.6.1
+	- Fixed issue #29 Resize does not work when event is 1 day and weekends off
+	- Fixed issue #24 single all-day events do not display in resource day view
+>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 
+<<<<<<< master-servoy
 version 1.6.3 (8/10/13)
 	- viewRender callback (PR 15)
 	- viewDestroy callback (PR 15)
@@ -17,12 +25,41 @@ version 1.6.3 (8/10/13)
 		- disableDragging
 		- disableResizing
 	- bundled with latest jQuery (1.10.2) and jQuery UI (1.10.3)
+=======
+version 1.6.1 (4/14/13)
+	- fixed event inner content overflow bug (issue 1783)
+	- fixed table header className bug (1772)
+	- removed text-shadow on events (better for general use, thx tkrotoff)
+>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 
+<<<<<<< master-servoy
 version 1.6.2 (7/18/13)
 	- hiddenDays option (issue 686)
 	- bugfix: when eventRender returns false, incorrect stacking of events (issue 762)
 	- bugfix: couldn't change event.backgroundImage when calling updateEvent (thx stephenharris)
+=======
+version 1.6.0 (3/18/13)
+	- visual facelift, with bootstrap-inspired buttons and colors
+	- simplified HTML/CSS for events and buttons
+	- dayRender, for modifying a day cell (issue 191, thx althaus)
+	- week numbers on side of calendar (issue 295)
+		- weekNumber
+		- weekNumberCalculation
+		- weekNumberTitle
+		- "W" formatting variable
+	- finer snapping granularity for agenda view events (issue 495, thx ms-doodle-com)
+	- eventAfterAllRender (issue 753, thx pdrakeweb)
+	- eventDataTransform (thx joeyspo)
+	- data-date attributes on cells (thx Jae)
+	- expose $.fullCalendar.dateFormatters
+	- when clicking fast on buttons, prevent text selection
+	- bundled with latest jQuery (1.9.1) and jQuery UI (1.10.2)
+	- Grunt/Lumbar build system for internal development
+	- build for Bower package manager
+	- build for jQuery plugin site
+>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 
+<<<<<<< master-servoy
 version 1.6.1 (4/14/13)
 	- fixed event inner content overflow bug (issue 1783)
 	- fixed table header className bug (1772)
@@ -48,6 +85,8 @@ version 1.6.0 (3/18/13)
 	- build for Bower package manager
 	- build for jQuery plugin site
 
+=======
+>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 version 1.5.4 (9/5/12)
 	- made compatible with jQuery 1.8.* (thx archaeron)
 	- bundled with jQuery 1.8.1 and jQuery UI 1.8.23

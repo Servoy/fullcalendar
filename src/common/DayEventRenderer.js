@@ -4,9 +4,15 @@ function DayEventRenderer() {
 
 	
 	// exports
+//<<<<<<< master-servoy
 	t.renderDayEvents = renderDayEvents;
 	t.draggableDayEvent = draggableDayEvent; // made public so that subclasses can override
 	t.resizableDayEvent = resizableDayEvent; // "
+//=======
+//	t.renderDaySegs = renderDaySegs;
+//	t.renderTempDaySegs = renderTempDaySegs;
+//	t.resizableDayEvent = resizableDayEvent;
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 	
 	
 	// imports
@@ -117,6 +123,8 @@ function DayEventRenderer() {
 		var segments = buildSegments(events);
 		var html;
 		var elements;
+//TODO merge
+//<<<<<<< master-servoy
 
 		// calculate the desired `left` and `width` properties on each segment object
 		calculateHorizontals(segments);
@@ -134,6 +142,30 @@ function DayEventRenderer() {
 		// re-attach elements to the real container.
 		if (doAppend) {
 			finalContainer.append(elements);
+//=======
+//		var segmentContainer = getDaySegmentContainer();
+//		var i;
+//		var segCnt = segs.length;
+//		var element;
+//
+//		tempContainer[0].innerHTML = daySegHTML(segs); // faster than .html()
+//		elements = tempContainer.children();
+//		segmentContainer.append(elements);
+//		daySegElementResolve(segs, elements);
+//		daySegCalcHSides(segs);
+//		daySegSetWidths(segs);
+//		daySegCalcHeights(segs);
+//		daySegSetTops(segs, getRowTops(getRowDivs()));
+//		elements = [];
+//		for (i=0; i<segCnt; i++) {
+//			element = segs[i].element;
+//			if (element) {
+//				if (segs[i].row === adjustRow) {
+//					element.css('top', adjustTop);
+//				}
+//				elements.push(element[0]);
+//			}
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		}
 
 		// assigns each element to `segment.event`, after filtering them through user callbacks
@@ -218,8 +250,140 @@ function DayEventRenderer() {
 	// Build a concatenated HTML string for an array of segments
 	function buildHTML(segments) {
 		var html = '';
+//TODO
+//<<<<<<< master-servoy
 		for (var i=0; i<segments.length; i++) {
 			html += buildHTMLForSegment(segments[i]);
+//=======
+//		var viewName = getViewName();
+//		var weekends = opt('weekends'), weekendTestDate, weekendSumColStart, weekendSumColEnd;
+//		// calculate desired position/dimensions, create html
+//		for (i=0; i<segCnt; i++) {
+//			seg = segs[i];
+//			event = seg.event;
+//			classes = ['fc-event', 'fc-event-hori'];
+//			if (isEventDraggable(event)) {
+//				classes.push('fc-event-draggable');
+//			}
+//			if (seg.isStart) {
+//				classes.push('fc-event-start');
+//			}
+//			if (seg.isEnd) {
+//				classes.push('fc-event-end');
+//			}
+//			if (rtl) {
+//				leftCol = dayOfWeekCol(seg.end.getDay()-1);
+//				rightCol = dayOfWeekCol(seg.start.getDay());
+//				left = seg.isEnd ? colContentLeft(leftCol) : minLeft;
+//				right = seg.isStart ? colContentRight(rightCol) : maxLeft;
+//			}else{
+//				leftCol = dayOfWeekCol(seg.start.getDay());
+//				rightCol = dayOfWeekCol(seg.end.getDay()-1);
+//				left = seg.isStart ? colContentLeft(leftCol) : minLeft;
+//				right = seg.isEnd ? colContentRight(rightCol) : maxLeft;
+//			}
+//			
+//			// TODO: better implementation for this one..
+//			if (viewName == 'resourceMonth') {
+//				// for resourceMonth view
+//				leftCol = seg.start.getDate()-1;
+//				rightCol = seg.end.getDate()-2;
+//
+//				if(!weekends) {
+//					// Drop out weekends
+//					weekendSumColStart=0	
+//					weekendSumColEnd=0
+//					
+//					for(var j=0; j<=leftCol; j++) {
+//						weekendTestDate = addDays(cloneDate(t.visStart), j);
+//						
+//						if(weekendTestDate.getDay() == 0 || weekendTestDate.getDay() == 6) {
+//							weekendSumColStart++;
+//						}
+//					}
+//					leftCol -= weekendSumColStart;
+//					
+//					if (seg.start.getDay() == 6 || seg.start.getDay() == 0) leftCol++;
+//					
+//					for(j=0; j<=rightCol; j++) {
+//						weekendTestDate = addDays(cloneDate(t.visStart), j);
+//						
+//						if(weekendTestDate.getDay() == 0 || weekendTestDate.getDay() == 6) {
+//							weekendSumColEnd++;
+//						}
+//					}
+//					rightCol -= weekendSumColEnd;
+//				}
+//				
+//				if(rightCol < 0) {
+//					// end is in the next month so rightCol is the last column
+//					rightCol = getColCnt()-1;
+//				}
+//			}
+//			else if (viewName == 'resourceNextWeeks') {
+//				leftCol = dateCell(seg.start).col;
+//				rightCol = dateCell(seg.end).col-1;
+//				if(!weekends) {
+//					leftCol = dateCell(seg.start).col;
+//					rightCol = dateCell(addDays(cloneDate(seg.end),-1)).col;
+//					if (seg.start.getDay() == 6 || seg.start.getDay() == 0) leftCol++;
+//				}
+//			}
+//			else if (viewName == 'resourceDay') {
+//				// hack for resourceDay view
+//				leftCol = timeOfDayCol(seg.start);
+//				rightCol = timeOfDayCol(seg.end)-1;
+//			}
+//			
+//			if (rtl) {
+//				left = seg.isEnd ? colContentLeft(leftCol) : minLeft;
+//				right = seg.isStart ? colContentRight(rightCol) : maxLeft;
+//			}else{
+//				left = seg.isStart ? colContentLeft(leftCol) : minLeft;
+//				right = seg.isEnd ? colContentRight(rightCol) : maxLeft;
+//			}
+//			
+//			classes = classes.concat(event.className);
+//			if (event.source) {
+//				classes = classes.concat(event.source.className || []);
+//			}
+//			url = event.url;
+//			skinCss = getSkinCss(event, opt);
+//			if (url) {
+//				html += "<a href='" + htmlEscape(url) + "'";
+//			}else{
+//				html += "<div";
+//			}
+//			html +=
+//				" class='" + classes.join(' ') + "'" +
+//				" style='position:absolute;z-index:8;left:"+left+"px;" + skinCss + "'" +
+//				">" +
+//				"<div class='fc-event-inner'>" +
+//				(skinCss ? " style='" + skinCss + "'" : "") +
+//				">";
+//			if (!event.allDay && seg.isStart) {
+//				html +=
+//					"<span class='fc-event-time'>" +
+//					htmlEscape(formatDates(event.start, event.end, opt('timeFormat'))) +
+//					"</span>";
+//			}
+//			html +=
+//				"<span class='fc-event-title' " + (skinCss ? " style='" + skinCss + "'" : "") + ">" + htmlEscape(event.title) + "</span>" +
+//				"</div>";
+//			if (seg.isEnd && isEventResizable(event)) {
+//				html +=
+//					"<div class='ui-resizable-handle ui-resizable-" + (rtl ? 'w' : 'e') + "'>" +
+//					"&nbsp;&nbsp;&nbsp;" + // makes hit area a lot better for IE6/7
+//					"</div>";
+//			}
+//			
+//			html +=
+//				"</" + (url ? "a" : "div" ) + ">";
+//			seg.left = left;
+//			seg.outerWidth = right - left;
+//			seg.startCol = leftCol;
+//			seg.endCol = rightCol + 1; // needs to be exclusive
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		}
 		return html;
 	}
@@ -524,6 +688,7 @@ function DayEventRenderer() {
 		}
 		return rowDivs;
 	}
+//<<<<<<< master-servoy
 
 
 
@@ -541,8 +706,42 @@ function DayEventRenderer() {
 				bindDaySeg(event, element, segment);
 			}else{
 				element[0]._fci = i; // for lazySegBind
+//TODO merge
 			}
 		});
+
+		lazySegBind(segmentContainer, segments, bindDaySeg);
+	}				
+//=======
+	
+	
+	function getRowTops(rowDivs) {
+		var i;
+		var rowCnt = rowDivs.length;
+		var tops = [];
+		for (i=0; i<rowCnt; i++) {
+			tops[i] = rowDivs[i][0].offsetTop; // !!?? but this means the element needs position:relative if in a table cell!!!!
+		}
+		return tops;
+	}
+	
+	
+	function daySegSetTops(segs, rowTops) { // also triggers eventAfterRender
+		var i;
+		var segCnt = segs.length;
+		var seg;
+		var element;
+		var event;
+		for (i=0; i<segCnt; i++) {
+			seg = segs[i];
+			element = seg.element;
+			if (element) {
+				element[0].style.top = rowTops[seg.row] + (seg.top||0) + 'px';
+				event = seg.event;
+				trigger('eventAfterRender', event, event, element);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
+			}
+		}//);
 
 		lazySegBind(segmentContainer, segments, bindDaySeg);
 	}
@@ -607,10 +806,21 @@ function DayEventRenderer() {
 		});
 	}
 
-	
+//TODO merge
+//<<<<<<< master-servoy
 	function resizableDayEvent(event, element, segment) {
 		var isRTL = opt('isRTL');
 		var direction = isRTL ? 'w' : 'e';
+//=======
+/*	
+	 Resizing
+	-----------------------------------------------------------------------------------
+	
+	
+	function resizableDayEvent(event, element, seg) {
+		var rtl = opt('isRTL');
+		var direction = rtl ? 'w' : 'e';*/
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		var handle = element.find('.ui-resizable-' + direction); // TODO: stop using this class because we aren't using jqui for this
 		var isResizing = false;
 		

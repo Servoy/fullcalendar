@@ -29,10 +29,16 @@ function BasicDayView(element, calendar) {
 		var end = addDays(cloneDate(start), 1);
 
 		t.title = formatDate(date, opt('titleFormat'));
+//TODO merge
+//<<<<<<< master-servoy
 
 		t.start = t.visStart = start;
 		t.end = t.visEnd = end;
 
+//=======
+//		t.start = t.visStart = cloneDate(date, true);
+//		t.end = t.visEnd = addDays(cloneDate(t.start), 1);
+//>>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
 		renderBasic(1, 1, false);
 	}
 	
