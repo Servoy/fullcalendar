@@ -196,7 +196,7 @@ function View(element, calendar, viewName) {
 	---------------------------------------------------------------------------------*/
 	
 	
-	function eventDrop(e, event, dayDelta, minuteDelta, allDay, ev, ui) {
+	function eventDrop(e, event, dayDelta, minuteDelta, allDay, ev, ui, resource) {
 		var oldAllDay = event.allDay;
 		var eventId = event._id;
 //TODO merge
@@ -255,7 +255,7 @@ function View(element, calendar, viewName) {
 	---------------------------------------------------------------------------------*/
 	
 	
-	function moveEvents(events, dayDelta, minuteDelta, allDay) {
+	function moveEvents(events, dayDelta, minuteDelta, allDay, resource) {
 		minuteDelta = minuteDelta || 0;
 		for (var e, len=events.length, i=0; i<len; i++) {
 			e = events[i];
