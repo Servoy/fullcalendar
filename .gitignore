@@ -9,3 +9,4 @@ node_modules
 
 # for bower
 components
+/.project
