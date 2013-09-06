@@ -42,6 +42,7 @@ function AgendaView(element, calendar, viewName) {
 	t.colContentRight = colContentRight;
 	t.getDaySegmentContainer = function() { return daySegmentContainer };
 	t.getSlotSegmentContainer = function() { return slotSegmentContainer };
+	t.getAnnotationSegmentContainer = function() { return annotationSegmentContainer };
 	t.getMinMinute = function() { return minMinute };
 	t.getMaxMinute = function() { return maxMinute };
 	t.getSlotContainer = function() { return slotContainer };
@@ -57,7 +58,7 @@ function AgendaView(element, calendar, viewName) {
 	t.reportDayClick = reportDayClick; // selection mousedown hack
 	t.dragStart = dragStart;
 	t.dragStop = dragStop;
-	
+	t.renderAnnotations = renderAnnotations;
 	
 	// imports
 	View.call(t, element, calendar, viewName);
@@ -91,6 +92,7 @@ function AgendaView(element, calendar, viewName) {
 	var dayBodyFirstCellStretcher;
 	var slotLayer;
 	var daySegmentContainer;
+	var annotationSegmentContainer;
 	var allDayTable;
 	var allDayRow;
 	var slotScroller;
@@ -235,6 +237,10 @@ function AgendaView(element, calendar, viewName) {
 				
 		slotSegmentContainer =
 			$("<div class='fc-event-container' style='position:absolute;z-index:8;top:0;left:0'/>")
+				.appendTo(slotContainer);
+		
+		annotationSegmentContainer =
+			$("<div style='position:absolute;z-index:-1;top:0;left:0'/>")
 				.appendTo(slotContainer);
 		
 		s =
@@ -610,7 +616,49 @@ function AgendaView(element, calendar, viewName) {
 		}
 	}
 	
-	
+	/* Render annotations
+	-----------------------------------------------------------------------------*/
+	function renderAnnotations(annotations) {
+		var html = '';
+		for (var i=0; i < annotations.length; i++) {
+			var ann = annotations[i];
+			if (ann.start >= this.start && ann.end <= this.end) {
+				var top = timePosition(ann.start, ann.start);
+				var bottom = timePosition(ann.end, ann.end);
+				var height = bottom - top;
+				var dayIndex = dayDiff(ann.start, t.visStart);
+				
+				var left = colContentLeft(dayIndex) - 2;
+				var right = colContentRight(dayIndex) + 3;
+				var width = right - left;
+
+				var cls = '';
+				if (ann.cls) {
+					cls = ' ' + ann.cls;
+				}
+
+				var colors = '';
+				if (ann.color) {
+					colors = 'color:' + ann.color + ';';
+				}
+				if (ann.background) {
+					colors += 'background:' + ann.background + ';';
+				}
+
+				var body = ann.title || '';
+
+				html += '<div style="position: absolute; ' + 
+					'top: ' + top + 'px; ' + 
+					'left: ' + left + 'px; ' +
+					'width: ' + width + 'px; ' +
+					'height: ' + height + 'px;' + colors + '" ' + 
+					'class="fc-annotation fc-annotation-skin' + cls + '">' + 
+					body + 
+					'</div>';
+			}
+		}
+		annotationSegmentContainer[0].innerHTML = html;				
+	}
 	
 	/* Coordinate Utilities
 	-----------------------------------------------------------------------------*/

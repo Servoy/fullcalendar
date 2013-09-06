@@ -72,7 +72,9 @@ var defaults = {
 	
 	dropAccept: '*',
 	
-	handleWindowResize: true
+	handleWindowResize: true,
+	
+	annotations: []
 	
 };
 

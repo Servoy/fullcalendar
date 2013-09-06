@@ -49,6 +49,7 @@ function Calendar(element, options, eventSources) {
 	var ignoreWindowResize = 0;
 	var date = new Date();
 	var events = [];
+	var annotations = t.options.annotations;
 	var _dragElement;
 	
 	
@@ -304,6 +305,10 @@ function Calendar(element, options, eventSources) {
 	function rerenderEvents(modifiedEventID) { // can be called as an API method
 		clearEvents();
 		renderEvents(modifiedEventID);
+		//TODO PA merge: to be removed ?
+		if(elementVisible()){
+			currentView.renderAnnotations(annotations);
+		}
 	}
 
 
@@ -312,6 +317,9 @@ function Calendar(element, options, eventSources) {
 			currentView.setEventData(events); // for View.js, TODO: unify with renderEvents
 			currentView.renderEvents(events, modifiedEventID); // actually render the DOM elements
 			currentView.trigger('eventAfterAllRender');
+			//TODO PA fix after merge
+			currentView.renderAnnotations(annotations);
+			
 		}
 	}
 
