@@ -620,42 +620,74 @@ function AgendaView(element, calendar, viewName) {
 	-----------------------------------------------------------------------------*/
 	function renderAnnotations(annotations) {
 		var html = '';
+		//for each annotation
 		for (var i=0; i < annotations.length; i++) {
 			var ann = annotations[i];
-			if (ann.start >= this.start && ann.end <= this.end) {
-				var top = timePosition(ann.start, ann.start);
-				var bottom = timePosition(ann.end, ann.end);
-				var height = bottom - top;
-				var dayIndex = dayDiff(ann.start, t.visStart);
-				
-				var left = colContentLeft(dayIndex) - 2;
-				var right = colContentRight(dayIndex) + 3;
-				var width = right - left;
+			//only if annotation between start and end of visualization
+			var isRecurring = ann.recurring ? true : false;
+			var nextStart = new Date(ann.start)
+			var nextEnd = new Date(ann.end);
+			if(isRecurring || nextStart >= this.start && nextEnd <= this.end){
+				do {
 
-				var cls = '';
-				if (ann.cls) {
-					cls = ' ' + ann.cls;
-				}
-
-				var colors = '';
-				if (ann.color) {
-					colors = 'color:' + ann.color + ';';
-				}
-				if (ann.background) {
-					colors += 'background:' + ann.background + ';';
-				}
-
-				var body = ann.title || '';
-
-				html += '<div style="position: absolute; ' + 
-					'top: ' + top + 'px; ' + 
-					'left: ' + left + 'px; ' +
-					'width: ' + width + 'px; ' +
-					'height: ' + height + 'px;' + colors + '" ' + 
-					'class="fc-annotation fc-annotation-skin' + cls + '">' + 
-					body + 
-					'</div>';
-			}
+					var top = timePosition(nextStart, nextStart);
+					var bottom = timePosition(nextEnd, nextEnd);
+					var height = bottom - top;
+					var dayIndex = dayDiff(nextStart, t.visStart);
+					var width;
+					
+					if(dayIndex >=0 && dayIndex <=6){
+						var left = colContentLeft(dayIndex) - 2;
+						var right = colContentRight(dayIndex) + 3;
+						width = right - left;
+					} else {
+						width = 0;
+					}
+	
+					var cls = '';
+					if (ann.cls) {
+						cls = ' ' + ann.cls;
+					}
+	
+					var colors = '';
+					if (ann.color) {
+						colors = 'color:' + ann.color + ';';
+					}
+					if (ann.background) {
+						colors += 'background:' + ann.background + ';';
+					}
+	
+					var body = ann.title || '';
+	
+					if(width){
+						html += '<div style="position: absolute; ' + 
+							'top: ' + top + 'px; ' + 
+							'left: ' + left + 'px; ' +
+							'width: ' + width + 'px; ' +
+							'height: ' + height + 'px;' + colors + '" ' + 
+							'class="fc-annotation fc-annotation-skin' + cls + '">' + 
+							body + 
+							'</div>';		
+					}	
+					if(isRecurring);
+					{
+						//if the view start in a date > then recurring annotation starting date, move to first recurring date of the view.
+						if((nextStart < this.start && nextEnd < this.end)){
+							var timeInterval = dayDiff(this.start, nextStart);
+							var recurrences = Math.floor(timeInterval/ann.recurring)
+							nextStart = addDays(nextStart, ann.recurring*recurrences, true);					
+							nextEnd = addDays(nextEnd, ann.recurring*recurrences, true);
+							if(nextStart < this.start){
+								nextStart = addDays(nextStart, ann.recurring, true);
+								nextEnd = addDays(nextEnd, ann.recurring, true);
+							}
+						} else {
+							nextStart = addDays(nextStart, ann.recurring, true);
+							nextEnd = addDays(nextEnd, ann.recurring, true);
+						}
+					}
+				} while (isRecurring && nextStart >= this.start && nextEnd <= this.end)
+			} 
 		}
 		annotationSegmentContainer[0].innerHTML = html;				
 	}

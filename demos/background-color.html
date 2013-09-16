@@ -8,6 +8,8 @@
 <script src='../build/out/fullcalendar.js'></script>
 <script type='text/javascript'>
 
+var filesUpload
+
 	$(document).ready(function() {
 
 		var date = new Date();
@@ -15,6 +17,7 @@
 		var m = date.getMonth();
 		var y = date.getFullYear();
 
+		var calendar = ('#calendar');
 		$('#calendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
@@ -76,10 +79,11 @@
 				{
 					start: new Date(y, m, d, 13, 0),
 					end: new Date(y, m, d, 15, 30),
-					title: 'My 1st annotation',
+					title: 'recurring',
 					cls: 'open', 
-					color: '#777777', // optional
-					background: '#eeeeff' // optional
+					color: '#f00', // optional
+					background: '#00f', // optional
+					recurring : 3
 				},
 				{
 					start: new Date(y, m, d+1, 15, 0),
@@ -90,8 +94,8 @@
 					background: '#eeeef0' // optional
 				},
 				{
-					start: new Date(y, m, d+1, 16, 0),
-					end: new Date(y, m, d+1, 18, 30),
+					start: new Date(y, m, d+2, 16, 0),
+					end: new Date(y, m, d+2, 18, 30),
 					title: 'Overlapping annotation',
 					cls: 'open', 
 					color: '#777777', // optional
@@ -102,11 +106,10 @@
 					start: new Date(y, m, d-1, 12, 0),
 					end: new Date(y, m, d-1, 14, 0)
 				}
-			]		
+			]	
 		});
 
 	});
-
 </script>
 <style type='text/css'>
 
