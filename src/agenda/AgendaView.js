@@ -549,7 +549,11 @@ function AgendaView(element, calendar, viewName) {
 
 	function slotBind(cells) {
 		cells.click(slotClick)
-			.mousedown(slotSelectionMousedown);
+			.mousedown(slotSelectionMousedown)
+			.bind('contextmenu', function(ev){ //@author paronne: SBAP 128/3 rightClick. Block contextmenu on rightClick
+				ev.preventDefault();
+				return false;
+			});
 	}
 	
 	
@@ -942,6 +946,7 @@ function AgendaView(element, calendar, viewName) {
 			//@author paronne: SBAP-128/3 implement rightClickSelect and dayRightClick
 			//TODO hoverlistener is not needed, should get just a direct click
 			ev.preventDefault();
+			ev.stopImmediatePropagation();
 			var datesRightClick;
 			hoverListener.start(function(cell, origCell) {
 				clearSelection();

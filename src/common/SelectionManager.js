@@ -96,6 +96,7 @@ function SelectionManager() {
 			//@author paronne: SBAP-128/3 implement rightClick
 			//TODO hoverlistener is not needed, should get just a direct click
 			ev.preventDefault();
+			ev.stopImmediatePropagation();
 			var _mousedownElement = this;
 			var datesRightClick;
 			hoverListener.start(function(cell, origCell) { // TODO: maybe put cellToDate/getIsCellAllDay info in cell

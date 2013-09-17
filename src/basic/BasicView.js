@@ -348,7 +348,11 @@ function BasicView(element, calendar, viewName) {
 	
 	function dayBind(days) {
 		days.click(dayClick)
-			.mousedown(daySelectionMousedown);
+			.mousedown(daySelectionMousedown)
+			.bind('contextmenu', function(ev){ //@author paronne: SBAP 128/3 rightClick. Block contextmenu on rightClick
+				ev.preventDefault();
+				return false;
+			});
 	}
 	
 	
