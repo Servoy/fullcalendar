@@ -932,8 +932,7 @@ function AgendaView(element, calendar, viewName) {
 				hoverListener.stop();
 				if (dates) {
 					if (+dates[0] == +dates[1]) {
-						//@author paronne: SBAP-128/2 add start, end to dayClick method (only in AgendaView)
-						reportDayClick(dates[0], false, ev, dates[0], dates[3]);
+						reportDayClick(dates[0], false, ev);
 					}
 					reportSelection(dates[0], dates[3], false, ev);
 				}
@@ -941,6 +940,7 @@ function AgendaView(element, calendar, viewName) {
 		} else if (ev.which == 3 && opt('selectable')){
 			//@author paronne: SBAP-128/3 implement rightClickSelect and dayRightClick
 			//TODO hoverlistener is not needed, should get just a direct click
+			ev.preventDefault();
 			var datesRightClick;
 			hoverListener.start(function(cell, origCell) {
 				clearSelection();
@@ -962,21 +962,20 @@ function AgendaView(element, calendar, viewName) {
 				if (datesRightClick) {
 					if (+datesRightClick[0] == +datesRightClick[1]) {
 						//@author paronne: SBAP-128/2 add start, end to dayClick method (only in AgendaView)
-						reportDayRightClick(datesRightClick[0], false, ev, datesRightClick[0], datesRightClick[3]);
+						if(reportDayRightClick) reportDayRightClick(datesRightClick[0], false, ev);
 					}
 				}
 			});
 		}
 	}
 
-	//@author paronne: SBAP-128/2 add start, end params to reportDayClick reporting the hours slot of the event(like in select)
-	function reportDayClick(date, allDay, ev, start, end) {
-		trigger('dayClick', dayBodyCells[dateToCell(date).col], date, allDay, ev, start, end);
+	function reportDayClick(date, allDay, ev) {
+		trigger('dayClick', dayBodyCells[dateToCell(date).col], date, allDay, ev);
 	}
 	
 	//@author paronne: SBAP-128/3 implement rightClick
-	function reportDayRightClick(date, allDay, ev, start, end) {
-		trigger('dayRightClick', dayBodyCells[dateToCell(date).col], date, allDay, ev, start, end);
+	function reportDayRightClick(date, allDay, ev) {
+		trigger('dayRightClick', dayBodyCells[dateToCell(date).col], date, allDay, ev);
 	}	
 	
 	/* External Dragging

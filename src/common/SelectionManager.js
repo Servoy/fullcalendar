@@ -92,9 +92,10 @@ function SelectionManager() {
 					reportSelection(dates[0], dates[1], true, ev);
 				}
 			});
-		} else if (ev.which == 3 && opt('selectable') ) {
+		} else if (ev.which == 3 && opt('selectable')) {
 			//@author paronne: SBAP-128/3 implement rightClick
 			//TODO hoverlistener is not needed, should get just a direct click
+			ev.preventDefault();
 			var _mousedownElement = this;
 			var datesRightClick;
 			hoverListener.start(function(cell, origCell) { // TODO: maybe put cellToDate/getIsCellAllDay info in cell
