@@ -24,15 +24,18 @@
 			selectable: true,
 			selectHelper: true,
 			dayRender:function(date, element){
+			
+				
+				
 				console.log(date)
 				console.log(element)
 			},
-			dayClick: function(date, allDay, jsEvent, view) {
+			dayClick: function(date, allDay, jsEvent, view, start, end) {
 
 					if (allDay) {
 						alert('Clicked on the entire day: ' + date);
 					}else{
-						alert('Clicked on the slot: ' + date);
+						alert('Clicked on the slot: ' + date + '\nStart: ' + start + '\nStart: ' + end);
 					}
 
 					alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);

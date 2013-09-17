@@ -933,7 +933,8 @@ function AgendaView(element, calendar, viewName) {
 				hoverListener.stop();
 				if (dates) {
 					if (+dates[0] == +dates[1]) {
-						reportDayClick(dates[0], false, ev);
+						//@author paronne: add start, end to dayClick method (only in AgendaView)
+						reportDayClick(dates[0], false, ev, dates[0], dates[3]);
 					}
 					reportSelection(dates[0], dates[3], false, ev);
 				}
@@ -941,9 +942,9 @@ function AgendaView(element, calendar, viewName) {
 		}
 	}
 
-
-	function reportDayClick(date, allDay, ev) {
-		trigger('dayClick', dayBodyCells[dateToCell(date).col], date, allDay, ev);
+	//@author paronne: add start, end params to reportDayClick reporting the hours slot of the event(like in select)
+	function reportDayClick(date, allDay, ev, start, end) {
+		trigger('dayClick', dayBodyCells[dateToCell(date).col], date, allDay, ev, start, end);
 	}
 	
 	
