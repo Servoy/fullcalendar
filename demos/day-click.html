@@ -23,12 +23,15 @@
 			},
 			selectable: true,
 			selectHelper: true,
-			dayRender:function(date, element){
-			
-				
-				
-				console.log(date)
-				console.log(element)
+			dayRender: function(date, element){
+			    console.log(element)
+				element.bind('contextmenu', function(jsEvent){
+					jsEvent.preventDefault();
+					jsEvent.stopImmediatePropagation();
+					console.log("rightclick pressed");
+					console.log(jsEvent)
+					return false;
+				});
 			},
 			dayClick: function(date, allDay, jsEvent, view, start, end) {
 
@@ -41,6 +44,21 @@
 					alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
 
 					alert('Current view: ' + view.name);
+
+					// change the day's background color just for fun
+					$(this).css('background-color', 'red');
+			},
+			dayRightClick: function(date, allDay, jsEvent, view, start, end) {
+
+					if (allDay) {
+						alert('Right Clicked on the entire day: ' + date);
+					}else{
+						alert('Right Clicked on the slot: ' + date + '\nStart: ' + start + '\nStart: ' + end);
+					}
+
+					alert('Right Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+					alert('Right Current view: ' + view.name);
 
 					// change the day's background color just for fun
 					$(this).css('background-color', 'red');

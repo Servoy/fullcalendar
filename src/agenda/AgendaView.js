@@ -78,7 +78,6 @@ function AgendaView(element, calendar, viewName) {
 	var rangeToSegments = t.rangeToSegments;
 	var formatDate = calendar.formatDate;
 	
-	
 	// locals
 	
 	var dayTable;
@@ -933,21 +932,52 @@ function AgendaView(element, calendar, viewName) {
 				hoverListener.stop();
 				if (dates) {
 					if (+dates[0] == +dates[1]) {
-						//@author paronne: add start, end to dayClick method (only in AgendaView)
+						//@author paronne: SBAP-128/2 add start, end to dayClick method (only in AgendaView)
 						reportDayClick(dates[0], false, ev, dates[0], dates[3]);
 					}
 					reportSelection(dates[0], dates[3], false, ev);
 				}
 			});
+		} else if (ev.which == 3 && opt('selectable')){
+			//@author paronne: SBAP-128/3 implement rightClickSelect and dayRightClick
+			//TODO hoverlistener is not needed, should get just a direct click
+			var datesRightClick;
+			hoverListener.start(function(cell, origCell) {
+				clearSelection();
+				if (cell && cell.col == origCell.col && !getIsCellAllDay(cell)) {
+					var d1 = realCellToDate(origCell);
+					var d2 = realCellToDate(cell);
+					datesRightClick = [
+						d1,
+						addMinutes(cloneDate(d1), snapMinutes), // calculate minutes depending on selection slot minutes 
+						d2,
+						addMinutes(cloneDate(d2), snapMinutes)
+					].sort(dateCompare);
+				}else{
+					dates = null;
+				}
+			}, ev);
+			$(document).one('mouseup', function(ev) {
+				hoverListener.stop();
+				if (datesRightClick) {
+					if (+datesRightClick[0] == +datesRightClick[1]) {
+						//@author paronne: SBAP-128/2 add start, end to dayClick method (only in AgendaView)
+						reportDayRightClick(datesRightClick[0], false, ev, datesRightClick[0], datesRightClick[3]);
+					}
+				}
+			});
 		}
 	}
 
-	//@author paronne: add start, end params to reportDayClick reporting the hours slot of the event(like in select)
+	//@author paronne: SBAP-128/2 add start, end params to reportDayClick reporting the hours slot of the event(like in select)
 	function reportDayClick(date, allDay, ev, start, end) {
 		trigger('dayClick', dayBodyCells[dateToCell(date).col], date, allDay, ev, start, end);
 	}
 	
-	
+	//@author paronne: SBAP-128/3 implement rightClick
+	function reportDayRightClick(date, allDay, ev, start, end) {
+		trigger('dayRightClick', dayBodyCells[dateToCell(date).col], date, allDay, ev, start, end);
+	}	
 	
 	/* External Dragging
 	--------------------------------------------------------------------------------*/

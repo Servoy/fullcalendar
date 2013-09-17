@@ -69,6 +69,7 @@ function SelectionManager() {
 		var getIsCellAllDay = t.getIsCellAllDay;
 		var hoverListener = t.getHoverListener();
 		var reportDayClick = t.reportDayClick; // this is hacky and sort of weird
+		var reportDayRightClick = t.reportDayRightClick; //@author paronne SBAP-128/3 implement rightClick
 		if (ev.which == 1 && opt('selectable')) { // which==1 means left mouse button
 			unselect(ev);
 			var _mousedownElement = this;
@@ -89,6 +90,28 @@ function SelectionManager() {
 						reportDayClick(dates[0], true, ev);
 					}
 					reportSelection(dates[0], dates[1], true, ev);
+				}
+			});
+		} else if (ev.which == 3 && opt('selectable') ) {
+			//@author paronne: SBAP-128/3 implement rightClick
+			//TODO hoverlistener is not needed, should get just a direct click
+			var _mousedownElement = this;
+			var datesRightClick;
+			hoverListener.start(function(cell, origCell) { // TODO: maybe put cellToDate/getIsCellAllDay info in cell
+				clearSelection();
+				if (cell && getIsCellAllDay(cell)) {
+					datesRightClick = [ cellToDate(origCell), cellToDate(cell) ].sort(dateCompare);
+				}else{
+					datesRightClick = null;
+				}
+			}, ev);
+			$(document).one('mouseup', function(ev) {
+				hoverListener.stop();
+				if (datesRightClick) {
+					if (+datesRightClick[0] == +datesRightClick[1]) {
+						//@author paronne: SBAP-128/3 implement rightClick
+						reportDayRightClick(datesRightClick[0], true, ev);
+					}
 				}
 			});
 		}

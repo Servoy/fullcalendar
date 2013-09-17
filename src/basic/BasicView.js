@@ -32,7 +32,7 @@ function BasicView(element, calendar, viewName) {
 	t.getColWidth = function() { return colWidth };
 	t.getDaySegmentContainer = function() { return daySegmentContainer };
 	t.renderAnnotations = renderAnnotations;
-
+	t.reportDayRightClick = reportDayRightClick;  	//@author paronne SBAP-128/3 implement rightClick
 	
 	// imports
 	View.call(t, element, calendar, viewName);
@@ -425,6 +425,12 @@ function BasicView(element, calendar, viewName) {
 		trigger('dayClick', _element, date, allDay, ev);
 	}
 	
+	//@author paronne SBAP-128/3 implement rightClick
+	function reportDayRightClick(date, allDay, ev) {
+		var cell = dateToCell(date);
+		var _element = bodyCells[cell.row*colCnt + cell.col];
+		trigger('dayRightClick', _element, date, allDay, ev);
+	}
 	
 	
 	/* External Dragging
