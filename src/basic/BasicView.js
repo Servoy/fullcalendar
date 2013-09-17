@@ -31,7 +31,8 @@ function BasicView(element, calendar, viewName) {
 	t.getColCnt = function() { return colCnt };
 	t.getColWidth = function() { return colWidth };
 	t.getDaySegmentContainer = function() { return daySegmentContainer };
-	
+	t.renderAnnotations = renderAnnotations;
+
 	
 	// imports
 	View.call(t, element, calendar, viewName);
@@ -390,6 +391,10 @@ function BasicView(element, calendar, viewName) {
 	function renderCellOverlay(row0, col0, row1, col1) { // row1,col1 is inclusive
 		var rect = coordinateGrid.rect(row0, col0, row1, col1, element);
 		return renderOverlay(rect, element);
+	}
+	
+	function renderAnnotations(annotations){
+		//TODO has not beeing implemented yet.
 	}
 	
 	
