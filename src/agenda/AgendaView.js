@@ -59,6 +59,7 @@ function AgendaView(element, calendar, viewName) {
 	t.dragStart = dragStart;
 	t.dragStop = dragStop;
 	t.renderAnnotations = renderAnnotations;
+	t.reportDayRightClick = reportDayRightClick; //@author paronne SBAP-128/3 rightClick
 	
 	// imports
 	View.call(t, element, calendar, viewName);
@@ -962,7 +963,7 @@ function AgendaView(element, calendar, viewName) {
 				if (datesRightClick) {
 					if (+datesRightClick[0] == +datesRightClick[1]) {
 						//@author paronne: SBAP-128/2 add start, end to dayClick method (only in AgendaView)
-						if(reportDayRightClick) reportDayRightClick(datesRightClick[0], false, ev);
+						reportDayRightClick(datesRightClick[0], false, ev);
 					}
 				}
 			});
