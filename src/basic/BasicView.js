@@ -394,7 +394,8 @@ function BasicView(element, calendar, viewName) {
 	}
 	
 	function renderAnnotations(annotations){
-		//TODO has not beeing implemented yet.
+		//FIXME: elhigu has not beeing implemented annotations for basic View
+		//this empty method avoid error in console
 	}
 	
 	
