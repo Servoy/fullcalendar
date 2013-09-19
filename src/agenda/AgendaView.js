@@ -630,7 +630,7 @@ function AgendaView(element, calendar, viewName) {
 	
 	/* Render annotations
 	-----------------------------------------------------------------------------*/
-	function renderAnnotations(annotations) {
+		function renderAnnotations(annotations) {
 		var html = '';
 		//for each annotation
 		for (var i=0; i < annotations.length; i++) {
@@ -639,6 +639,7 @@ function AgendaView(element, calendar, viewName) {
 			var isRecurring = ann.recurring ? true : false;
 			var nextStart = new Date(ann.start)
 			var nextEnd = new Date(ann.end);
+			//TODO review condition
 			if(isRecurring || nextStart >= this.start && nextEnd <= this.end){
 				do {
 
@@ -648,13 +649,36 @@ function AgendaView(element, calendar, viewName) {
 					var dayIndex = dayDiff(nextStart, t.visStart);
 					var width;
 					
-					if(dayIndex >=0 && dayIndex <=6){
-						var left = colContentLeft(dayIndex) - 2;
-						var right = colContentRight(dayIndex) + 3;
-						width = right - left;
+					//TODO review condition
+					// start should not be an hidden day
+					// this.start <= start < this.end
+					// get the column based on the day
+					// for semplicity end<this.end
+					if(!t.isHiddenDay(nextStart) && nextStart >= this.start && nextStart < this.end && nextEnd <= this.end){
+						try {
+							var cell = dateToCell(nextStart)
+							var left = colContentLeft(cell.col) - 2;
+							var right = colContentRight(cell.col) + 3;
+							width = right - left;
+						} catch (e){
+							width = 0;
+						}
 					} else {
-						width = 0;
+						width = 0
 					}
+					
+//					//TODO remove this code (what if a day is missing)
+//					if(dayIndex >= 0){
+//						try {
+//							var left = colContentLeft(dayIndex) - 2;
+//							var right = colContentRight(dayIndex) + 3;
+//							width = right - left;
+//						} catch (e){
+//							width = 0;
+//						}
+//					} else {
+//						width = 0;
+//					}
 	
 					var cls = '';
 					if (ann.cls) {
@@ -684,7 +708,8 @@ function AgendaView(element, calendar, viewName) {
 					if(isRecurring);
 					{
 						//if the view start in a date > then recurring annotation starting date, move to first recurring date of the view.
-						if((nextStart < this.start && nextEnd < this.end)){
+						if((nextStart < this.start)){  //TODO && nextStart < this.end
+							//how Many days from the last event
 							var timeInterval = dayDiff(this.start, nextStart);
 							var recurrences = Math.floor(timeInterval/ann.recurring)
 							nextStart = addDays(nextStart, ann.recurring*recurrences, true);					
@@ -698,6 +723,7 @@ function AgendaView(element, calendar, viewName) {
 							nextEnd = addDays(nextEnd, ann.recurring, true);
 						}
 					}
+					//TODO review condition
 				} while (isRecurring && nextStart >= this.start && nextEnd <= this.end)
 			} 
 		}
