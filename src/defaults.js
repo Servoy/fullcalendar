@@ -28,18 +28,26 @@ var defaults = {
 	endParam: 'end',
 
 	// resource ajax. Do we refetch resources on every view change?
-	//TODO cherry-pick: refetchResources: false,
+	refetchResources: false,
 	
 	// time formats
 	titleFormat: {
 		month: 'MMMM yyyy',
 		week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
-		day: 'dddd, MMM d, yyyy'
+		day: 'dddd, MMM d, yyyy',
+		resourceMonth: 'MMMM yyyy',
+		resourceWeek: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
+		resourceNextWeeks: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
+		resourceDay: 'dddd, MMM d, yyyy'
 	},
 	columnFormat: {
 		month: 'ddd',
 		week: 'ddd M/d',
-		day: 'dddd M/d'
+		day: 'dddd M/d',
+		resourceDay: 'H:mm',
+		resourceMonth: 'M/d',
+		resourceWeek: 'ddd M/d',
+		resourceNextWeeks: 'ddd M/d'
 	},
 	timeFormat: { // for event elements
 		'': 'h(:mm)t' // default
@@ -60,7 +68,11 @@ var defaults = {
 		today: 'today',
 		month: 'month',
 		week: 'week',
-		day: 'day'
+		day: 'day',		
+		resourceDay: 'resource day',
+		resourceWeek: 'resource week',
+		resourceNextWeeks: 'resource next weeks',
+		resourceMonth: 'resource month'
 	},
 	
 	// jquery-ui theming
@@ -75,8 +87,11 @@ var defaults = {
 	
 	dropAccept: '*',
 	
-	handleWindowResize: true
+	handleWindowResize: true,
 	
+	// ResourceNextWeeks week count
+	numberOfWeeks: 4,
+	weekPrefix: 'Week'
 };
 
 // right-to-left defaults

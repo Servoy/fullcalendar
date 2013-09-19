@@ -34,6 +34,7 @@
         "src/Calendar.js",
         "src/Header.js",
         "src/EventManager.js",
+        "src/ResourceManager.js",
         "src/date_util.js",
         "src/util.js",
         "src/basic/MonthView.js",

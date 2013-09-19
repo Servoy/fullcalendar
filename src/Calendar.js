@@ -1,6 +1,6 @@
 
  
-function Calendar(element, options, eventSources) {
+function Calendar(element, options, eventSources, resourceSources) {
 	var t = this;
 	
 	
@@ -10,6 +10,7 @@ function Calendar(element, options, eventSources) {
 	t.destroy = destroy;
 	t.refetchEvents = refetchEvents;
 	t.reportEvents = reportEvents;
+	t.refetchResources = refetchResources;
 	t.reportEventChange = reportEventChange;
 	t.rerenderEvents = rerenderEvents;
 	t.changeView = changeView;
@@ -35,6 +36,9 @@ function Calendar(element, options, eventSources) {
 	var isFetchNeeded = t.isFetchNeeded;
 	var fetchEvents = t.fetchEvents;
 	
+	// fetch resources
+	ResourceManager.call(t, options);
+	var fetchResources = t.fetchResources;
 	
 	// locals
 	var _element = element[0];
@@ -43,8 +47,10 @@ function Calendar(element, options, eventSources) {
 	var content;
 	var tm; // for making theme classes
 	var currentView;
+	var viewInstances = {};
 	var elementOuterWidth;
 	var suggestedViewHeight;
+	var absoluteViewElement;
 	var resizeUID = 0;
 	var ignoreWindowResize = 0;
 	var date = new Date();
@@ -67,6 +73,9 @@ function Calendar(element, options, eventSources) {
 		else if (elementVisible()) {
 			// mainly for the public API
 			calcSize();
+			//TODO copy:
+			//markSizesDirty();
+			//markEventsDirty();
 			_renderView(inc);
 		}
 	}
@@ -298,6 +307,26 @@ function Calendar(element, options, eventSources) {
 	function refetchEvents() { // can be called as an API method
 		clearEvents();
 		fetchAndRenderEvents();
+	}
+	
+	function refetchResources() {
+		fetchResources(false, currentView);
+
+		// we have to destroy all view instances and recreate current one
+		viewInstances = [];
+		
+		// remove current view from display
+		currentView.element.remove();
+		
+		// create current view again
+		currentView = viewInstances[currentView.name] = new fcViews[currentView.name](
+					absoluteViewElement =
+						$("<div class='fc-view fc-view-" + currentView.name + "' style='position:absolute'/>")
+							.appendTo(content),
+					t // the calendar object
+				);
+		// let's render the new view		
+		renderView();
 	}
 
 

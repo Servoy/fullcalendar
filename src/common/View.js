@@ -44,7 +44,14 @@ function View(element, calendar, viewName) {
 	function opt(name, viewNameOverride) {
 		var v = options[name];
 		if ($.isPlainObject(v)) {
-			return smartProperty(v, viewNameOverride || viewName);
+			//TODO edited
+			if(name == 'resources') {
+				return v;
+			}
+			else {
+				return smartProperty(v, viewNameOverride || viewName);
+			}
+			//return smartProperty(v, viewNameOverride || viewName);
 		}
 		return v;
 	}
@@ -223,7 +230,8 @@ function View(element, calendar, viewName) {
 				reportEventChange(eventId);
 			},
 			ev,
-			ui
+			ui,
+			resource
 		);
 		reportEventChange(eventId);
 	}

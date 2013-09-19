@@ -328,6 +328,7 @@ function ResourceView(element, calendar, viewName) {
 	
 	
 	function renderDayOverlay(overlayStart, overlayEnd, refreshCoordinateGrid, overlayRow) { // overlayEnd is exclusive
+		console.log("overlayRow  " + overlayRow)
 		if (refreshCoordinateGrid) {
 			coordinateGrid.build();
 		}
@@ -670,7 +671,7 @@ function ResourceView(element, calendar, viewName) {
 				}
 
 				if (cell && cellIsAllDay(cell) && resourceRO !== true) {
-					dates = [ cellDate(origCell), cellDate(cell) ].sort(cmp);
+					dates = [ cellDate(origCell), cellDate(cell) ].sort(dateCompare);
 					renderSelection(dates[0], dates[1], (viewName == 'resourceDay' ? false : true), cell.row);
 					row = cell.row;
 				}else{

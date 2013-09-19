@@ -110,6 +110,15 @@ function zeroDate() { // returns a Date with time 00:00:00 and dateOfMonth=1
 }
 
 
+function skipWeekend(date, inc, excl) {
+	inc = inc || 1;
+	while (!date.getDay() || (excl && date.getDay()==1 || !excl && date.getDay()==6)) {
+		addDays(date, inc);
+	}
+	return date;
+}
+
+
 function dayDiff(d1, d2) { // d1 - d2
 	return Math.round((cloneDate(d1, true) - cloneDate(d2, true)) / DAY_MS);
 }
@@ -365,13 +374,8 @@ fc.dateFormatters = dateFormatters;
 /* thanks jQuery UI (https://github.com/jquery/jquery-ui/blob/master/ui/jquery.ui.datepicker.js)
  * 
  * Set as calculateWeek to determine the week of the year based on the ISO 8601 definition.
-<<<<<<< master-servoy
- * `date` - the date to get the week for
- * `number` - the number of the week within the year that contains this date
-=======
  * @param  date  Date - the date to get the week for
  * @return  number - the number of the week within the year that contains this date
->>>>>>> 9aafd21 version 1.6.1.1 (5/11/13) - Merged with latest Fullcalendar version 1.6.1 - Fixed issue #29 Resize does not work when event is 1 day and weekends off - Fixed issue #24 single all-day events do not display in resource day view
  */
 function iso8601Week(date) {
 	var time;

@@ -239,6 +239,10 @@ function DayEventRenderer() {
 			var leftFunc = (isRTL ? segment.isEnd : segment.isStart) ? colContentLeft : colLeft;
 			var rightFunc = (isRTL ? segment.isStart : segment.isEnd) ? colContentRight : colRight;
 
+			//console.log(this)
+			//console.log(leftFunc)
+			//console.log(rightFunc)
+
 			var left = leftFunc(segment.leftCol);
 			var right = rightFunc(segment.rightCol);
 			segment.left = left;
@@ -785,7 +789,9 @@ function DayEventRenderer() {
 						dayDelta = dayDiff(date, origDate);
 						renderDayOverlay(
 							addDays(cloneDate(event.start), dayDelta),
-							addDays(exclEndDay(event), dayDelta)
+							addDays(exclEndDay(event), dayDelta),
+							false,
+							cell.row
 						);
 					}else{
 						dayDelta = 0;
@@ -806,6 +812,11 @@ function DayEventRenderer() {
 		});
 	}
 
+
+
+	/* Resizing
+	-----------------------------------------------------------------------------------*/
+
 //TODO merge
 //<<<<<<< master-servoy
 	function resizableDayEvent(event, element, segment) {
@@ -813,10 +824,6 @@ function DayEventRenderer() {
 		var direction = isRTL ? 'w' : 'e';
 //=======
 /*	
-	 Resizing
-	-----------------------------------------------------------------------------------
-	
-	
 	function resizableDayEvent(event, element, seg) {
 		var rtl = opt('isRTL');
 		var direction = rtl ? 'w' : 'e';*/
@@ -893,7 +900,9 @@ function DayEventRenderer() {
 					clearOverlays();
 					renderDayOverlay( // coordinate grid already rebuilt with hoverListener.start()
 						event.start,
-						addDays( exclEndDay(event), dayDelta )
+						addDays( exclEndDay(event), dayDelta ),
+						1,
+						0
 						// TODO: instead of calling renderDayOverlay() with dates,
 						// call _renderDayOverlay (or whatever) with cell offsets.
 					);

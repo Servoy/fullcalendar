@@ -18,8 +18,8 @@ function ResourceEventRenderer() {
 	//var setOverflowHidden = t.setOverflowHidden;
 	var isEventDraggable = t.isEventDraggable;
 	var isEventResizable = t.isEventResizable;
-	var reportEvents = t.reportEvents;
-	var reportEventClear = t.reportEventClear;
+	var setEventData = t.setEventData;
+	var clearEventData = t.clearEventData;
 	var eventElementHandlers = t.eventElementHandlers;
 	var showEvents = t.showEvents;
 	var hideEvents = t.hideEvents;
@@ -31,7 +31,7 @@ function ResourceEventRenderer() {
 	var getRowCnt = t.getRowCnt;
 	var getColCnt = t.getColCnt;
 	var getViewName = t.getViewName;
-	var renderDaySegs = t.renderDaySegs;
+	var renderDayEvents = t.renderDayEvents;
 	var dateCell = t.dateCell;
 	var clearSelection = t.clearSelection;
 	var eventEnd = t.eventEnd;
@@ -46,13 +46,14 @@ function ResourceEventRenderer() {
 	
 	
 	function renderEvents(events, modifiedEventId) {
-		reportEvents(events);
-		renderDaySegs(compileSegs(events), modifiedEventId);
+		setEventData(events);
+		//TODO remove renderDaySegs
+		renderDayEvents(events, modifiedEventId);
 	}
 	
 	
 	function clearEvents() {
-		reportEventClear();
+		clearEventData();
 		getDaySegmentContainer().empty();
 	}
 	
