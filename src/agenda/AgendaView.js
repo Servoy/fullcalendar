@@ -457,7 +457,9 @@ function AgendaView(element, calendar, viewName) {
 		
 		slotLayer.css('top', headHeight);
 		
-		slotScroller.height(bodyHeight - allDayHeight - 1);
+		
+		//slotScroller.height(bodyHeight - allDayHeight - 1);
+		slotScroller.height(Math.min(bodyHeight - allDayHeight - 1, $('.fc').height() - ($('.fc-header').height() + headHeight + allDayHeight + 1)));
 		
 		slotHeight = slotTableFirstInner.height() + 1; // +1 for border
 
