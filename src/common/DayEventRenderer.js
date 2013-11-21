@@ -126,6 +126,8 @@ function DayEventRenderer() {
 		// colLeft is always 0. should be the the column of the correct resource:
 		// need to match resource to column and get correct height
 		// can get col by resources[id = id]
+		// call build segments of ResourceEventRenderer ?
+		// create ResourceDayEventRenderer ?
 		var segments = buildSegments(events);
 		var html;
 		var elements;
