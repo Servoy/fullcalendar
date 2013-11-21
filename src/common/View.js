@@ -199,6 +199,8 @@ function View(element, calendar, viewName) {
 	function eventDrop(e, event, dayDelta, minuteDelta, allDay, ev, ui) {
 		var oldAllDay = event.allDay;
 		var eventId = event._id;
+        //PA fix: assign resource to original object because event is a clone
+        eventsByID[eventId][0].resourceId = event.resourceId;
 		moveEvents(eventsByID[eventId], dayDelta, minuteDelta, allDay);
 		trigger(
 			'eventDrop',
