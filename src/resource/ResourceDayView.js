@@ -8,22 +8,23 @@ function ResourceDayView(element, calendar) {
 	// exports
 	t.render = render;
 	t.renderAnnotations = renderAnnotations;
-	
+
 	// imports
 	ResourceView.call(t, element, calendar, 'resourceDay');
 	var opt = t.opt;
 	var renderResource = t.renderResource;
 	var formatDate = calendar.formatDate;
-	
+	var skipHiddenDays = t.skipHiddenDays;
+
 	
 	
 	function render(date, delta) {
 		if (delta) {
 			addDays(date, delta);
-			if (!opt('weekends')) {
-				skipWeekend(date, delta < 0 ? -1 : 1);
-			}
 		}
+		skipHiddenDays(date, delta < 0 ? -1 : 1);
+
+		
 		var start = cloneDate(date, true);
 		var end = addDays(cloneDate(start), 1);
 		t.title = formatDate(date, opt('titleFormat'));
