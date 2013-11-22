@@ -995,7 +995,6 @@ function AgendaView(element, calendar, viewName) {
 				hoverListener.stop();
 				if (datesRightClick) {
 					if (+datesRightClick[0] == +datesRightClick[1]) {
-						//@author paronne: SBAP-128/2 add start, end to dayClick method (only in AgendaView)
 						reportDayRightClick(datesRightClick[0], false, ev);
 					}
 				}

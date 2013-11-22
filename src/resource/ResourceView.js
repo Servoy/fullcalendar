@@ -62,11 +62,12 @@ function ResourceView(element, calendar, viewName) {
     t.renderSelection = renderSelection;
     t.clearSelection = clearSelection;
     t.reportDayClick = reportDayClick; // selection mousedown hack
+	t.reportDayRightClick = reportDayRightClick; //@author paronne SBAP-128/3 rightClick
     t.dragStart = dragStart;
     t.dragStop = dragStop;
     t.resourceCol = resourceCol;
     t.resources = calendar.fetchResources();
-    
+
 	
     // imports
     View.call(t, element, calendar, viewName);
@@ -439,13 +440,17 @@ function ResourceView(element, calendar, viewName) {
 
     function dayBind(cells) {
         cells.click(slotClick)
-        .mousedown(daySelectionMousedown);
+        	.mousedown(daySelectionMousedown);
     }
 
 
     function slotBind(cells) {
         cells.click(slotClick)
-        .mousedown(slotSelectionMousedown);
+	        .mousedown(slotSelectionMousedown)
+			.bind('contextmenu', function(ev){ //@author paronne: SBAP 128/3 rightClick. Block contextmenu on rightClick
+				ev.preventDefault();
+				return false;
+			});
     }
 	
 	
@@ -781,8 +786,33 @@ function ResourceView(element, calendar, viewName) {
                     reportSelection(dates[0], dates[1], true, ev, resource.id);
                 }
             });
-        }
-    }
+        } else if (ev.which == 3 && opt('selectable')){
+    		//@author paronne: SBAP-128/3 implement rightClickSelect and dayRightClick
+    		//TODO hoverlistener is not needed, should get just a direct click
+    		ev.preventDefault();
+    		ev.stopImmediatePropagation();
+    		var datesRightClick;
+            var resource;
+    		hoverListener.start(function(cell, origCell) {
+    			clearSelection();
+    		       if (cell && cellIsAllDay(cell)) {
+                       resource = resources[cell.col];
+                       datesRightClick = [ cellDate(origCell), cellDate(cell) ].sort(dateCompare);
+                       renderSelection(datesRightClick[0], datesRightClick[1], true, resource);
+                   }else{
+                       dates = null;
+                   }
+    		}, ev);
+    		$(document).one('mouseup', function(ev) {
+    			hoverListener.stop();
+    			if (datesRightClick) {
+    				if (datesRightClick && resource) {
+    					reportDayRightClick(datesRightClick[0], false, ev, resource.id);
+    				}
+    			}
+    		});
+    	}
+    } 
 	
 	
     function slotSelectionMousedown(ev) {
@@ -813,7 +843,38 @@ function ResourceView(element, calendar, viewName) {
                     reportSelection(dates[0], dates[3], false, ev, resource.id);
                 }
             });
-        }
+        } else if (ev.which == 3 && opt('selectable')){
+			//@author paronne: SBAP-128/3 implement rightClickSelect and dayRightClick
+			//TODO hoverlistener is not needed, should get just a direct click
+			ev.preventDefault();
+			ev.stopImmediatePropagation();
+			var datesRightClick;
+            var resource;
+			hoverListener.start(function(cell, origCell) {
+				clearSelection();
+				if (cell && cell.col == origCell.col && !cellIsAllDay(cell)) {
+                    resource = resources[cell.col];
+					var d1 = cellDate(origCell);
+					var d2 = cellDate(cell);
+					datesRightClick = [
+						d1,
+						addMinutes(cloneDate(d1), opt('slotMinutes')), // calculate minutes depending on selection slot minutes 
+						d2,
+						addMinutes(cloneDate(d2), opt('slotMinutes'))
+					].sort(dateCompare);
+				}else{
+					dates = null;
+				}
+			}, ev);
+			$(document).one('mouseup', function(ev) {
+				hoverListener.stop();
+				if (datesRightClick) {
+					if (datesRightClick && resource) {
+						reportDayRightClick(datesRightClick[0], false, ev, resource.id);
+					}
+				}
+			});
+		}
     }
 	
 	
@@ -821,6 +882,11 @@ function ResourceView(element, calendar, viewName) {
         trigger('dayClick', dayBodyCells[dayOfWeekCol(date.getDay())], date, allDay, ev);
     }
 	
+    
+	//@author paronne: SBAP-128/3 implement rightClick
+	function reportDayRightClick(date, allDay, ev, resourceId) {
+		trigger('dayRightClick', dayBodyCells[dayOfWeekCol(date.getDay())], date, allDay, ev, resourceId);
+	}
 	
 	
     /* External Dragging
