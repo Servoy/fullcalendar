@@ -382,7 +382,7 @@ function ResourceEventRenderer() {
 			" class='" + classes.join(' ') + "'" +
 			" style=" +
 				"'" +
-				"position:absolute;" +
+				"position:absolute;z-index:8;" +
 				"top:" + seg.top + "px;" +
 				"left:" + seg.left + "px;" +
 				skinCss +
