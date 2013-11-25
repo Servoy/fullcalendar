@@ -430,10 +430,11 @@ function BasicView(element, calendar, viewName) {
 	}
 	
 	//@author paronne SBAP-128/3 implement rightClick
+	// send undefined resource param 
 	function reportDayRightClick(date, allDay, ev) {
 		var cell = dateToCell(date);
 		var _element = bodyCells[cell.row*colCnt + cell.col];
-		trigger('dayRightClick', _element, date, allDay, ev);
+		trigger('dayRightClick', _element, date, allDay, ev, resourceId);
 	}
 	
 	

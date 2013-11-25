@@ -1007,8 +1007,9 @@ function AgendaView(element, calendar, viewName) {
 	}
 	
 	//@author paronne: SBAP-128/3 implement rightClick
+	//send undefined resource param 
 	function reportDayRightClick(date, allDay, ev) {
-		trigger('dayRightClick', dayBodyCells[dateToCell(date).col], date, allDay, ev);
+		trigger('dayRightClick', dayBodyCells[dateToCell(date).col], date, allDay, ev, resourceId);
 	}	
 	
 	/* External Dragging
