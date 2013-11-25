@@ -434,7 +434,7 @@ function BasicView(element, calendar, viewName) {
 	function reportDayRightClick(date, allDay, ev) {
 		var cell = dateToCell(date);
 		var _element = bodyCells[cell.row*colCnt + cell.col];
-		trigger('dayRightClick', _element, date, allDay, ev, resourceId);
+		trigger('dayRightClick', _element, date, allDay, ev, undefined);
 	}
 	
 	
