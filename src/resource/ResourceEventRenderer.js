@@ -76,8 +76,8 @@ function ResourceEventRenderer() {
             }
         }
         if (opt('allDaySlot')) {
-            //PA clone the events to be rendered and adjust start/end
-            renderDayEvents(dayEvents, modifiedEventId, resources);
+            //PA push only the events visible in current view
+            renderDayEvents(filterVisibleDayEvents(dayEvents), modifiedEventId, resources);
             setHeight(); // no params means set to viewHeight
         }
         renderSlotSegs(compileSlotSegs(slotEvents), modifiedEventId);
@@ -779,6 +779,26 @@ function ResourceEventRenderer() {
     
     function cssKey(_element) {
     	return _element.id + '/' + _element.className + '/' + _element.style.cssText.replace(/(^|;)\s*(top|left|width|height)\s*:[^;]*/ig, '');
+    }
+    
+    /*
+     * @author: paronne
+     * filter from dayEvents all the events not contained in current view
+     * */
+    function filterVisibleDayEvents(dayEvents) {
+    	var visibleDayEvents = []
+    	for(var j=0; j<dayEvents.length; j++) {
+    		var event = dayEvents[j]
+    		// use variable _end instead of end because in allday events end can be null.
+    		// note fullcalendar consider allDay event with event.end == view.start date. is this correct ?
+    		if ( 
+    			 (event.start <= t.start && event._end >= t.start) || //start before view and end at least after start  e.s__v.s___e.e
+    			 (event.start >= t.start && event.start < t.end)      //start in view and end whenever   v.s___e.s__e.e
+    		   ) {
+    			visibleDayEvents.push(event)
+    		}
+    	}
+    	return visibleDayEvents
     }
     
 }
