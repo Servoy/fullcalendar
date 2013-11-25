@@ -67,7 +67,8 @@ function ResourceView(element, calendar, viewName) {
     t.dragStop = dragStop;
     t.resourceCol = resourceCol;
     t.resources = calendar.fetchResources();
-
+	t.getAnnotationSegmentContainer = function() { return annotationSegmentContainer };
+    t.renderAnnotations = renderAnnotations;
 	
     // imports
     View.call(t, element, calendar, viewName);
@@ -133,7 +134,8 @@ function ResourceView(element, calendar, viewName) {
     var minMinute, maxMinute;
     var colFormat;
     var resources = t.resources;
-    
+	var annotationSegmentContainer;
+
     
     
     /* Rendering
@@ -285,6 +287,10 @@ function ResourceView(element, calendar, viewName) {
         $("<div style='position:absolute;z-index:8;top:0;left:0'/>")
         .appendTo(slotContent);
 		
+		annotationSegmentContainer =
+		$("<div style='position:absolute;z-index:-1;top:0;left:0'/>")
+			.appendTo(slotContent);
+        
         s =
         "<table class='fc-agenda-slots' style='width:100%' cellspacing='0'>" +
         "<tbody>";
@@ -494,14 +500,15 @@ function ResourceView(element, calendar, viewName) {
     }
 	
 
-    function renderSlotOverlay(overlayStart, overlayEnd) {
+    function renderSlotOverlay(overlayStart, overlayEnd, resource) {
         var dayStart = cloneDate(t.visStart);
         var dayEnd = addDays(cloneDate(dayStart), 1);
         for (var i=0; i<colCnt; i++) {
             var stretchStart = new Date(Math.max(dayStart, overlayStart));
             var stretchEnd = new Date(Math.min(dayEnd, overlayEnd));
             if (stretchStart < stretchEnd) {
-                var col = i*dis+dit;
+                //var col = i*dis+dit;
+                var col = resourceCol(resource);
                 var rect = coordinateGrid.rect(0, col, 0, col, slotContent); // only use it for horizontal coords
                 var top = timePosition(dayStart, stretchStart);
                 var bottom = timePosition(dayStart, stretchEnd);
@@ -748,7 +755,7 @@ function ResourceView(element, calendar, viewName) {
                 }
             }
         }else{
-            renderSlotOverlay(startDate, endDate);
+            renderSlotOverlay(startDate, endDate, resource);
         }
     }
 	
@@ -916,5 +923,107 @@ function ResourceView(element, calendar, viewName) {
             trigger('drop', _dragElement, cellDate(cell), cellIsAllDay(cell), ev, ui);
         }
     }
+    
+    /* Render annotations
+	-----------------------------------------------------------------------------*/
+		function renderAnnotations(annotations) {
+		var html = '';
+		//for each annotation
+		for (var i=0; i < annotations.length; i++) {
+			var ann = annotations[i];
+			//only if annotation between start and end of visualization
+			var isRecurring = ann.recurring ? true : false;
+			var nextStart = new Date(ann.start)
+			var nextEnd = new Date(ann.end);
+			//TODO review condition
+			if(isRecurring || nextStart >= this.start && nextEnd <= this.end){
+				do {
+
+					var top = timePosition(nextStart, nextStart);
+					var bottom = timePosition(nextEnd, nextEnd);
+					var height = bottom - top;
+					var dayIndex = dayDiff(nextStart, t.visStart);
+					var width;
+					
+					//TODO review condition
+					// start should not be an hidden day
+					// this.start <= start < this.end
+					// get the column based on the day
+					// for semplicity end<this.end
+					if(!t.isHiddenDay(nextStart) && nextStart >= this.start && nextStart < this.end && nextEnd <= this.end){
+						try {
+							var cnt = t.getColCnt()
+							var left = colContentLeft(0) - 2;
+							var right = colContentRight(cnt - 1) + 3;
+							width = right - left;
+						} catch (e){
+							width = 0;
+						}
+					} else {
+						width = 0
+					}
+					
+//					//TODO remove this code (what if a day is missing)
+//					if(dayIndex >= 0){
+//						try {
+//							var left = colContentLeft(dayIndex) - 2;
+//							var right = colContentRight(dayIndex) + 3;
+//							width = right - left;
+//						} catch (e){
+//							width = 0;
+//						}
+//					} else {
+//						width = 0;
+//					}
+	
+					var cls = '';
+					if (ann.cls) {
+						cls = ' ' + ann.cls;
+					}
+	
+					var colors = '';
+					if (ann.color) {
+						colors = 'color:' + ann.color + ';';
+					}
+					if (ann.background) {
+						colors += 'background:' + ann.background + ';';
+					}
+	
+					var body = ann.title || '';
+	
+					if(width){
+						html += '<div style="position: absolute; ' + 
+							'top: ' + top + 'px; ' + 
+							'left: ' + left + 'px; ' +
+							'width: ' + width + 'px; ' +
+							'height: ' + height + 'px;' + colors + '" ' + 
+							'class="fc-annotation fc-annotation-skin' + cls + '">' + 
+							body + 
+							'</div>';		
+					}	
+					if(isRecurring);
+					{
+						//if the view start in a date > then recurring annotation starting date, move to first recurring date of the view.
+						if((nextStart < this.start)){  //TODO && nextStart < this.end
+							//how Many days from the last event
+							var timeInterval = dayDiff(this.start, nextStart);
+							var recurrences = Math.floor(timeInterval/ann.recurring)
+							nextStart = addDays(nextStart, ann.recurring*recurrences, true);					
+							nextEnd = addDays(nextEnd, ann.recurring*recurrences, true);
+							if(nextStart < this.start){
+								nextStart = addDays(nextStart, ann.recurring, true);
+								nextEnd = addDays(nextEnd, ann.recurring, true);
+							}
+						} else {
+							nextStart = addDays(nextStart, ann.recurring, true);
+							nextEnd = addDays(nextEnd, ann.recurring, true);
+						}
+					}
+					//TODO review condition
+				} while (isRecurring && nextStart >= this.start && nextEnd <= this.end)
+			} 
+		}
+		annotationSegmentContainer[0].innerHTML = html;				
+	}
 
 }
