@@ -707,6 +707,7 @@ function AgendaView(element, calendar, viewName) {
 							body + 
 							'</div>';		
 					}	
+					// TODO and annotation.recurring end or #iterations
 					if(isRecurring);
 					{
 						//if the view start in a date > then recurring annotation starting date, move to first recurring date of the view.
