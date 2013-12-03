@@ -48,7 +48,7 @@ function BasicView(element, calendar, viewName) {
 	var dateToCell = t.dateToCell;
 	var rangeToSegments = t.rangeToSegments;
 	var formatDate = calendar.formatDate;
-	
+		
 	
 	// locals
 	

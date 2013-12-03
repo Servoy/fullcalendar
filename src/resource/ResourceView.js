@@ -70,6 +70,9 @@ function ResourceView(element, calendar, viewName) {
 	t.getAnnotationSegmentContainer = function() { return annotationSegmentContainer };
     t.renderAnnotations = renderAnnotations;
 	
+    // rerender resources after changes
+    t.rerenderResources = rerenderResources;
+    
     // imports
     View.call(t, element, calendar, viewName);
     OverlayManager.call(t);
@@ -85,7 +88,6 @@ function ResourceView(element, calendar, viewName) {
     //var daySelectionMousedown = t.daySelectionMousedown;  // redefine here
     var slotSegHtml = t.slotSegHtml;
     var formatDate = calendar.formatDate;
-    
     
     // locals
 	
@@ -156,6 +158,13 @@ function ResourceView(element, calendar, viewName) {
         updateCells();
     }
 	
+    function rerenderResources() {
+    	// TODO do i need to update both variables ?
+    	t.resources = calendar.fetchResources();
+		resources = t.resources;
+    	//renderResource(true);
+    	//triggerEventDestroy()
+    }
 	
 	
     function updateOptions() {
@@ -1025,5 +1034,7 @@ function ResourceView(element, calendar, viewName) {
 		}
 		annotationSegmentContainer[0].innerHTML = html;				
 	}
+		
+
 
 }

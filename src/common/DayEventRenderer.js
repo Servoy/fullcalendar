@@ -788,7 +788,8 @@ function compileResourceSegments(segments, resources) {
 	//for any resource assign correct resourceCol
 	for(var i = 0; i < segments.length; i++) {
 		var seg = segments[i];
-		var col = resourceCol(seg.event.resource, resources);
+		// FIXME for better code mantainance should send resource object to resourceCol instead of resourceId
+		var col = resourceCol(seg.event.resourceId, resources);
 		seg.leftCol = col;
 		seg.rightCol = col;
 	}
@@ -798,9 +799,9 @@ function compileResourceSegments(segments, resources) {
 
 /*  PA
  *  return the column index the resource is at.  Return -1 if resource cannot be found. */
-function resourceCol(resource, resources) {
+function resourceCol(resourceId, resources) {
     for (var i=0; i<resources.length; i++) {
-        if (resource.id === resources[i].id)
+        if (resourceId === resources[i].id)
             return i;
     }
     return -1;

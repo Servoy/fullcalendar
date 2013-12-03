@@ -29,6 +29,7 @@ function Calendar(element, options, eventSources, resourceSources) {
 	t.option = option;
 	t.trigger = trigger;
 	
+	t.reportResources = reportResources;
 	
 	// imports
 	EventManager.call(t, options, eventSources);
@@ -318,7 +319,6 @@ function Calendar(element, options, eventSources, resourceSources) {
 			currentView.setEventData(events); // for View.js, TODO: unify with renderEvents
 			currentView.renderEvents(events, modifiedEventID); // actually render the DOM elements
 			currentView.trigger('eventAfterAllRender');
-			//TODO PA fix after merge
 			currentView.renderAnnotations(annotations);
 			
 		}
@@ -354,14 +354,18 @@ function Calendar(element, options, eventSources, resourceSources) {
 		events = _events;
 		renderEvents();
 	}
+	
 
 
 	// called when a single event's data has been changed
 	function reportEventChange(eventID) {
 		rerenderEvents(eventID);
 	}
-
-
+	
+	/* Resource Updating */
+	function rerenderResouces(){
+		currentView.rerenderResources();
+	}
 
 	/* Header Updating
 	-----------------------------------------------------------------------------*/
@@ -515,6 +519,43 @@ function Calendar(element, options, eventSources, resourceSources) {
 		}
 	}
 	
+	/**
+	 * When resources are updated fore view rerender if current view is resourceView
+	 * */
+	function reportResources() {
+		//FIXME view name is hardcoded
+		if(!currentView || currentView.name == 'resourceDay') {
+			_reportResources()
+		}
+	}
+	
+	function _reportResources(){
+		//FIXME is hardcoded
+		var newViewName = 'resourceDay'
+			
+		ignoreWindowResize++;
+			
+		if (currentView) {
+			trigger('viewDestroy', currentView, currentView, currentView.element);
+			unselect();
+			currentView.triggerEventDestroy(); // trigger 'eventDestroy' for each event
+			freezeContentHeight();
+			currentView.element.remove();      // destroy the current HTML element
+		}
+
+		currentView = new fcViews[newViewName](
+			$("<div class='fc-view fc-view-" + newViewName + "' style='position:relative'/>")
+				.appendTo(content),
+			t // the calendar object
+		);
+
+		renderView();
+		unfreezeContentHeight();
+
+		currentView.rerenderResources(); // assume that current view is resourceDay
+		ignoreWindowResize--;
+		
+	}
 	
 	
 	/* External Dragging

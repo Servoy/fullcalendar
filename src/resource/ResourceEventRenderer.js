@@ -48,8 +48,8 @@ function ResourceEventRenderer() {
     var calendar = t.calendar;
     var formatDate = calendar.formatDate;
     var formatDates = calendar.formatDates;
-    var resourceCol = t.resourceCol;  // imported from ResourceView.js
-    var resources = t.resources;  // imported from ResourceView.js
+    var resourceCol = t.resourceCol;  			// imported from ResourceView.js
+    var resources = t.resources;  				// imported from ResourceView.js
 	
     //Override render day events
     t.draggableDayEvent = draggableDayEvent;
@@ -69,7 +69,7 @@ function ResourceEventRenderer() {
         slotEvents=[];
         for (i=0; i<len; i++) {
         	// PA fix push in dayEvents only if has resource
-            if (events[i].allDay && events[i].resource) {
+            if (events[i].allDay && (events[i].resource || events[i].resourceId)) {
                 dayEvents.push(events[i]);
             }else{
                 slotEvents.push(events[i]);
@@ -792,13 +792,29 @@ function ResourceEventRenderer() {
     		// use variable _end instead of end because in allday events end can be null.
     		// note fullcalendar consider allDay event with event.end == view.start date. is this correct ?
     		if ( 
-    			 (event.start <= t.start && event._end >= t.start) || //start before view and end at least after start  e.s__v.s___e.e
-    			 (event.start >= t.start && event.start < t.end)      //start in view and end whenever   v.s___e.s__e.e
-    		   ) {
+    			 (
+    			 	(event.start <= t.start && event._end >= t.start) || //start before view and end at least after start  e.s__v.s___e.e
+    			 	(event.start >= t.start && event.start < t.end)  	//start in view and end whenever   v.s___e.s__e.e
+				 ) && 
+				 event.resourceId && 
+				 existsResourceSource(event.resourceId)
+    			) {
     			visibleDayEvents.push(event)
     		}
     	}
     	return visibleDayEvents
     }
+    
+    /**
+     * check if exist the resource in sources cache
+     * */
+	function existsResourceSource(resourceId) {
+		for(var j=0; j<resources.length; j++) {
+			if (resources[j].id == resourceId) {
+				return true
+			}
+		}
+		return false;
+	}
     
 }

@@ -10,6 +10,12 @@ function ResourceManager(options) {
 	
     // exports
     t.fetchResources = fetchResources;
+    t.removeResource = removeResource
+	t.addResource = addResource;
+    
+    //imports
+	var reportResources = t.reportResources;
+
     
     // local
     var sources = [];  // sourdce array
@@ -18,6 +24,31 @@ function ResourceManager(options) {
     _addResourceSources(options['resources']);
 
 
+    /**
+     * Remove the resource
+     * Provide resource id or the same resource object that needs to be removed
+     * */
+    function removeResource(resource){
+    	_removeResourceSource(resource)
+		fetchResources(false)					// updates the cache
+		reportResources()						// call reportResource to update the view
+    }
+    
+    /**
+     * Add a new resource
+     * */
+	function addResource(resource){
+		var _sources = sources.map( function(src) {   // clone object to avoid side-effects
+			return $.extend(true, {}, src.resources)
+		});
+		sources = []
+		_sources.push(resource)
+    	_addResourceSources(_sources)           // parse all resources
+		fetchResources(false)					// updates the cache
+		reportResources()					    // call reportResource to update the view
+		
+	}
+    
     /**
      * ----------------------------------------------------------------
      * Categorize and add the provided sources
@@ -49,6 +80,35 @@ function ResourceManager(options) {
                 sources.push(source);
             }
         }
+    }
+    
+    /**
+     * ----------------------------------------------------------------
+     * Remove the provided source
+     * ----------------------------------------------------------------
+     */
+    function _removeResourceSource(_source) {
+        
+        if (typeof _source == 'string' || typeof _source == 'number') {
+            // is it an ID ?            
+            sources = $.grep(sources, function(src) {
+				return src.resources.id == _source
+			}); 
+            cache = $.grep(cache, function(e) {
+				return e.id == _source
+			}); 
+            
+        } else if (typeof _source == 'object') {
+            // is it json object?
+			sources = $.grep(sources, function(src) {		// filter the source
+				normalizeSource(_source)
+				return !isSourcesEqual(src.resources, _source);
+			});  
+            cache = $.grep(cache, function(e) { 			// filter the cache
+				return e.source == _source
+			}); 
+        }
+        
     }
 
 
@@ -131,6 +191,16 @@ function ResourceManager(options) {
             normalizers[i](source);
         }
     }
+    
+    /**
+     * FIXME: PA should delete the same exact object
+     * Check if resource are equal
+     * Are considered equale if have same name and id
+     * 
+     * */
+	function isSourcesEqual(source1, source2) {
+		return source1 && source2 && source1.name == source2.name && source1.id == source2.id;
+	}
 
-
+	
 }
