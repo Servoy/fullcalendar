@@ -85,7 +85,10 @@ function EventManager(options, _sources) {
 					//  For arrays, we'll want to process all events right in the beginning, then never again.
 				
 					for (var i=0; i<events.length; i++) {
-						events[i].source = source;
+					// fc-issue: https://code.google.com/p/fullcalendar/issues/detail?can=2&start=0&num=100&q=&colspec=ID%20Type%20Status%20Milestone%20Summary%20Stars&groupby=&sort=&id=2050
+						if(!events[i].source) {
+							events[i].source = source;
+						}
 						normalizeEvent(events[i]);
 					}
 					cache = cache.concat(events);
@@ -264,7 +267,7 @@ function EventManager(options, _sources) {
 				e.borderColor = event.borderColor;
 				e.textColor = event.textColor;
 				normalizeEvent(e);
-			}
+			} 
 		}
 		normalizeEvent(event);
 		reportEvents(cache);
