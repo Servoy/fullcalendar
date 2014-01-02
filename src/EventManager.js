@@ -282,6 +282,18 @@ function EventManager(options, _sources) {
 				event.source = stickySource;
 			}
 			cache.push(event);
+		} else {
+			//search for source and push event into the source.
+			var source;
+			for (var j=0; j<sources.length; j++) {
+				source = sources[j]
+				if (isSourcesEqual(source, event.source)) {
+					source.events.push(event);
+					break;
+				}
+			}
+			//push the event also into the cache
+			cache.push(event);
 		}
 		reportEvents(cache);
 	}
