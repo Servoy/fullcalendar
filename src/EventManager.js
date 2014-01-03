@@ -288,7 +288,9 @@ function EventManager(options, _sources) {
 			for (var j=0; j<sources.length; j++) {
 				source = sources[j]
 				if (isSourcesEqual(source, event.source)) {
-					source.events.push(event);
+					if(source.events) {
+						source.events.push(event);
+					}
 					break;
 				}
 			}
