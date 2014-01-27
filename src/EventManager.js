@@ -288,7 +288,7 @@ function EventManager(options, _sources) {
 			for (var j=0; j<sources.length; j++) {
 				source = sources[j]
 				if (isSourcesEqual(source, event.source)) {
-					if(source.events) {
+					if(source.events && $.isArray(source.events)) {
 						source.events.push(event);
 					}
 					break;
