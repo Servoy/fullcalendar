@@ -213,6 +213,8 @@ function AgendaView(element, calendar, viewName) {
 			allDayTable = $(s).appendTo(slotLayer);
 			allDayRow = allDayTable.find('tr');
 			
+			// paronne: remove context menu in all day cell at right click
+			allDayRow.find('td').bind('contextmenu', function (e) {return false})
 			dayBind(allDayRow.find('td'));
 			
 			slotLayer.append(
