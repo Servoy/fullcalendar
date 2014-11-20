@@ -820,11 +820,15 @@ function ResourceView(element, calendar, viewName) {
                        dates = null;
                    }
     		}, ev);
+    		// prevent contextmenu at right click
+			$(document).one('contextmenu', function(ev) {
+				return false;
+			});
     		$(document).one('mouseup', function(ev) {
     			hoverListener.stop();
     			if (datesRightClick) {
     				if (datesRightClick && resource) {
-    					reportDayRightClick(datesRightClick[0], false, ev, resource.id);
+    					reportDayRightClick(datesRightClick[0], true, ev, resource.id);
     				}
     			}
     		});

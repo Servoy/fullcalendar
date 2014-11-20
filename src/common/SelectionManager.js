@@ -107,6 +107,10 @@ function SelectionManager() {
 					datesRightClick = null;
 				}
 			}, ev);
+    		// prevent contextmenu at right click
+			$(document).one('contextmenu', function(ev) {
+				return false;
+			});
 			$(document).one('mouseup', function(ev) {
 				hoverListener.stop();
 				if (datesRightClick) {
