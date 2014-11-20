@@ -35,6 +35,7 @@ function ResourceView(element, calendar, viewName) {
     t.setHeight = setHeight;
     t.beforeHide = beforeHide;
     t.afterShow = afterShow;
+	t.afterRender = afterRender;
     t.defaultEventEnd = defaultEventEnd;
     t.timePosition = timePosition;
     t.dayOfWeekCol = dayOfWeekCol;
@@ -437,6 +438,11 @@ function ResourceView(element, calendar, viewName) {
         scroll();
         setTimeout(scroll, 0); // overrides any previous scroll state made by the browser
     }
+    
+	
+	function afterRender() { // after the view has been freshly rendered and sized
+		resetScroll();
+	}
 	
 	
     function beforeHide() {
@@ -1039,7 +1045,5 @@ function ResourceView(element, calendar, viewName) {
 		}
 		annotationSegmentContainer[0].innerHTML = html;				
 	}
-		
-
 
 }
